@@ -17,7 +17,7 @@
       "fr": ""
     },
     "publishedAt": "2026-05-22T14:37:44.053Z",
-    "updatedAt": "2026-05-22T17:48:03.535Z",
+    "updatedAt": "2026-05-22T17:48:43.733Z",
     "locale": "es",
     "translations": [
       "es"
@@ -262,6 +262,22 @@
           "fr": ""
         },
         "level": 4
+      },
+      {
+        "id": "02rnwc74mo4y",
+        "type": "image",
+        "content": {
+          "en": "",
+          "es": "",
+          "fr": ""
+        },
+        "imageUrl": "https://res.cloudinary.com/df5we7yoo/image/upload/v1779472105/blog-images/poo0xvun9fnpt2y325n2.jpg",
+        "imageAlign": "center",
+        "imageAlt": {
+          "en": "",
+          "es": "Listas IPTV España,IPTV España",
+          "fr": ""
+        }
       },
       {
         "id": "prh8mowbrq",
