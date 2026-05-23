@@ -2,7 +2,7 @@
   "common": {
     "home": "Home",
     "pricing": "Pricing",
-    "features": "Features",
+    "features": "Discover Canada's Best IPTV Provider",
     "faq": "FAQ",
     "contact": "Contact",
     "contactUs": "Contact Us",
@@ -15,15 +15,14 @@
     "email": "Email",
     "channelsWorldwide": "Stream anywhere in Canada — coast to coast.",
     "joinCustomers": "Trusted by thousands of Canadians nationwide.",
-    "features": "Discover Canada's Best IPTV Provider",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service",
     "refundPolicy": "Refund Policy",
     "viewOffers": "View Offers"
   },
   "blog": {
-    "title": "IPTV Guides & Blog",
-    "description": "IPTV Smarters Pro tutorials, M3U & Xtream Codes setup, Firestick & Smart TV guides, playlists, and subscription tips.",
+    "title": "IPTV Canada Guides & Blog",
+    "description": "Canadian setup guides for Smarters Pro, M3U playlists, Xtream login, Firestick, Smart TV, and iptv box — written for viewers across Canada.",
     "noPosts": "No blog posts available yet.",
     "readMore": "Read more",
     "backToBlog": "Back to Blog"
@@ -31,7 +30,7 @@
   "home": {
     "latestFromBlog": "IPTV Canada guides & setup tips",
     "latestFromBlogSubtitle": "Best iptv canada, iptv quebec, iptv box, Firestick, M3U, Smart TV & iptv subscription help",
-    "viewAllArticles": "View all articles"
+    "viewAllArticles": "Browse all Canada guides"
   },
   "canadaLanding": {
     "statsEyebrow": "IPTV Canada · Premium streaming",
@@ -108,8 +107,8 @@
     "linkResellerProgram": "Reseller program"
   },
   "officialPlayerApps": {
-    "title": "Recommended IPTV player apps",
-    "subtitle": "Your subscription is delivered as M3U or Xtream Codes. Install a trusted player — use only the official download pages below (we are not affiliated with these apps; they are the tools that play your subscription).",
+    "title": "Trusted IPTV players for Canadian subscribers",
+    "subtitle": "Your CAD plan includes M3U or Xtream access. Install players only from the official links below — we provide the subscription; these apps are independent third-party players.",
     "smartersTitle": "IPTV Smarters Pro",
     "smartersBody": "Official app for Xtream Codes API and M3U playlists. Most of our guides use Smarters.",
     "smartersCta": "Official Smarters downloads",
@@ -187,7 +186,7 @@
   "pricing": {
     "title": "IPTV Subscription Plans Canada",
     "subtitle": "Choose your ideal iptv canada plan — 25,000+ channels, 4K streaming, instant activation, and Canadian support. No contracts required.",
-    "showPremiumPlans": true,
+    "showPremiumPlans": false,
     "currencyCode": "CAD",
     "oneConnection": "1 Connection",
     "twoConnectionsPremium": "2 Connections + Premium",
@@ -223,7 +222,7 @@
     "adultContent": "Adult content (with password)",
     "freeMonth": "+1 Free Month",
     "freeMonths": "+2 Free Months",
-    "currencyNote": "Prices in Canadian dollars (format: 29 $CA). Taxes may apply by province."
+    "currencyNote": ""
   },
   "faq": {
     "title": "IPTV Canada FAQ — Plans, IPTV Box & Quebec",
@@ -236,52 +235,52 @@
       "answer": "Standard plans include one connection; premium iptv with box and multi-screen plans support two or more devices simultaneously via IPTV Smarters Pro — ideal for families across Canada."
     },
     "bandwidth": {
-      "question": "How much bandwidth does IPTV streaming consume?",
-      "answer": "Our IPTV streams use the latest H.264 technology, which offers the best compression and image quality. The average size of an IPTV stream is around 8 Mbps. However, when changing channels, the H.264 protocol can have a momentary peak to start displaying the image. For this reason, a minimum internet speed of 16 Mbps is required, and 30 Mbps is recommended for HD channels."
+      "question": "What internet speed do I need for IPTV in Canada?",
+      "answer": "Streams use efficient H.264 encoding — expect roughly 8 Mbps per HD feed, with a short spike when you change channels. For reliable iptv canada viewing we recommend at least 16 Mbps download; 30 Mbps or more is ideal for 4K and multi-device households."
     },
     "devicesSupported": {
       "question": "What devices work with IPTV in Canada?",
       "answer": "Firestick, Android TV, Samsung/LG Smart TV, Apple TV, Roku, MAG/Formuler iptv box devices, iPhone, iPad, Windows, and Mac. Our guides cover iptv box setup for every major platform."
     },
     "satellite": {
-      "question": "Do I need satellite to use IPTV?",
-      "answer": "No satellite equipment or dish antenna is needed. Connection to Smarters Pro servers is made through the internet."
+      "question": "Do I need satellite or cable TV hardware?",
+      "answer": "No dish, satellite box, or cable outlet is required. Your iptv subscription plays over your existing home broadband — the same connection you use for Netflix or YouTube."
     },
     "advantages": {
-      "question": "What are the advantages of IPTV?",
-      "answer": "IPTV (Internet Protocol Television) offers several advantages. It represents a promising and highly profitable market that is valued by numerous telecommunications providers. In addition, IPTV allows the creation of new positive and profitable services that can generate additional revenue."
+      "question": "Why choose IPTV over traditional cable in Canada?",
+      "answer": "Internet TV lets you watch live and on-demand content on devices you already own — often at a lower monthly cost than cable, with flexible CAD plans, no truck roll, and no long-term contracts common with Canadian cable bundles."
     },
     "fundamentals": {
-      "question": "What are the fundamentals of the IPTV system?",
-      "answer": "Two basic IPTV systems: content broadcast to multiple users simultaneously (live broadcast) or used for Video On Demand (VOD), where content is delivered individually to the subscriber who requested it. The system depends on a decoder (set-top box) and other essential components."
+      "question": "How does IPTV delivery work?",
+      "answer": "IPTV sends TV over your IP connection: live channels are streamed to many viewers at once, while VOD titles are sent on demand when you select them. Your player app (Smarters, iptv box software, etc.) reads the M3U or API credentials we email after purchase."
     },
     "whatIsIptv": {
       "question": "What is IPTV and how does IPTV Canada work?",
       "answer": "IPTV delivers TV over the internet instead of cable or satellite. With our best iptv canada service you get login credentials for premium servers, install a player like IPTV Smarters Pro, and stream 25,000+ channels plus 120,000+ VOD titles — iptv for canada with EPG, catch-up, and multi-device options."
     },
     "supportResponse": {
-      "question": "Response time for technical support tickets?",
-      "answer": "When sending a ticket for account activation or technical support, you will receive a response within 30 minutes to 1 hour, with the goal of responding within the first hour. During peak hours, response time may extend up to 2 hours."
+      "question": "How fast is Canadian support?",
+      "answer": "We aim to answer activation and technical tickets within 30–60 minutes. During peak evenings or weekends, please allow up to 2 hours — most setup issues are resolved the same day via WhatsApp or email."
     },
     "smartTvChannels": {
-      "question": "I downloaded the channel list, but the channels don't work on my Smart TV",
-      "answer": "Please make sure your channel list works by testing it with IPTV Smarters Pro or another IPTV application on a PC. If it still doesn't work, don't hesitate to contact us via WhatsApp."
+      "question": "Channels work on PC but not on my Smart TV — what should I check?",
+      "answer": "Confirm the playlist plays in IPTV Smarters Pro on a computer first. If it does, reinstall the TV app, verify date/time settings, and ensure your TV is on the same network. Still stuck? Message us on WhatsApp with your TV brand and app name."
     },
     "vlcSiptrv": {
-      "question": "Do channels work in the VLC player, but don't work in the SiPTV app?",
-      "answer": "If you have TVs with webOS or Tizen and your streams are multicast, you must enable the UDP to HTTP function in the app settings and configure it on your router. IPTV SMARTERS PRO Subscription"
+      "question": "VLC plays my list but SiPTV does not — why?",
+      "answer": "On LG webOS or Samsung Tizen with multicast feeds, turn on UDP-to-HTTP in the player and enable the matching option on your router. If VLC works elsewhere, the TV app may need a different playlist type or router profile."
     },
     "androidTvBox": {
-      "question": "Can an Android TV Box device convert my TV into a Smart TV?",
-      "answer": "The answer is yes. In fact, you will have access to all kinds of Google Play Store applications for Android. This turns your TV into an interactive device. You can use applications like Gmail, Firefox, Skype and many others directly from your TV. IPTV SMARTERS PRO Subscription"
+      "question": "Will an Android TV box make my older TV “smart”?",
+      "answer": "Yes. A certified Android TV box adds Google Play, browsers, and IPTV apps to any HDMI screen — ideal for Smarters Pro, Smarters Lite, or IBO Player with your iptv canada login."
     },
     "wifiEthernet": {
-      "question": "Wi-Fi or Ethernet?",
-      "answer": "We always recommend connecting the device by cable (Ethernet)."
+      "question": "Should I use Wi‑Fi or Ethernet for IPTV?",
+      "answer": "Wired Ethernet gives the steadiest picture, especially for NHL and 4K sports. Wi‑Fi is fine on a strong signal; if you buffer often, move the box closer to the router or use a cable."
     },
     "androidTvBoxInstall": {
-      "question": "What is an Android TV Box and how to use it to install IPTV Smarters Pro?",
-      "answer": "An Android TV Box is an Android system device that converts your TV into a Smart TV, allowing you to install applications like IPTV Smarters Pro or Smarters Player Lite or ibo player. IPTV Smarters Pro Installation: 1. Connect the box to your TV and make sure it's connected to the internet. 2. Install IPTV Smarters Pro from Google Play Store. 3. Open the app, add a user and enter your IPTV credentials. 4. Enjoy streaming your IPTV channels! Install IPTV Smarters Pro or Smarters Player Lite (via Google Play Store) right now and start enjoying."
+      "question": "How do I set up IPTV Smarters on an Android TV box?",
+      "answer": "Plug the box into your TV and connect to the internet. Open Google Play, install IPTV Smarters Pro (or Smarters Player Lite), tap Add User, and enter the Xtream or M3U details from your welcome email. Restart once, then open Live TV to start streaming."
     },
     "freeTrial": {
       "question": "Can I get a free trial of IPTV Canada?",
@@ -320,7 +319,7 @@
     "quickLinks": "Quick Links",
     "legal": "Legal",
     "paymentMethods": "Payment Methods",
-    "copyright": "© {year} Best IPTV Subscription. All rights reserved.",
+    "copyright": "© {year} StreamPro IPTV Canada. All rights reserved.",
     "trustedResourcesTitle": "Trusted resources",
     "trustedSmarters": "IPTV Smarters Pro (official downloads)",
     "trustedIbo": "IBO Player (official site)",
@@ -328,38 +327,38 @@
     "trustedPlayApps": "Google Play apps"
   },
   "installation": {
-    "title": "IPTV Smarters Pro APK / Smarters Player Lite App Installation Guide",
-    "subtitle": "How to install IPTV Smarters Pro on your device",
-    "description": "Follow our simple installation guides to get started with IPTV on your preferred device.",
-    "introTitle": "Looking for a reliable app to watch live TV, movies, series, and channels from around the world?",
-    "introDescription": "Download IPTV Smarters Pro APK (2025) and turn your device into a true entertainment platform. This app is designed for users with an IPTV Subscription and offers a smooth and user-friendly streaming experience.",
-    "introTagline": "iptv smarters pro free",
+    "title": "Install IPTV Smarters Pro in Canada — APK & Lite Player Guide",
+    "subtitle": "Step-by-step setup for Firestick, Smart TV, Android, iOS & Windows",
+    "description": "Canadian-friendly guides to install Smarters Pro or Smarters Lite and connect your M3U or Xtream credentials on any device.",
+    "introTitle": "Need a simple player for live TV, sports, and on-demand in Canada?",
+    "introDescription": "IPTV Smarters Pro (and the free Smarters Player Lite) let you sign in with the M3U or Xtream details we send after you subscribe. No content is bundled in the app — it plays the channels included with your CAD plan.",
+    "introTagline": "iptv smarters canada setup",
     "whatIsTitle": "What is IPTV Smarters Pro?",
-    "whatIsDescription": "IPTV Smarters is a media player application that allows users to stream IPTV content from their subscription provider. The app does not provide any content by itself, but it allows you to connect to your IPTV subscription via an Xtream Codes API, an M3U link, or a playlist file.",
-    "compatibleTitle": "Compatible with:",
+    "whatIsDescription": "Smarters is a third-party media player for IPTV subscriptions. It does not include channels on its own; you add your portal URL, username, and password, or paste an M3U link from your iptv subscription email.",
+    "compatibleTitle": "Works on:",
     "compatibleAndroid": "Android (smartphones, tablets, TV box)",
     "compatibleSmartTv": "Smart TV (Samsung, LG)",
     "compatibleFirestick": "Firestick/Amazon Fire TV",
     "compatibleDesktop": "Windows and macOS (desktop version available)",
-    "whyChooseTitle": "Why choose IPTV Smarters?",
-    "whyChooseSubtitle": "Here are some advantages that make IPTV Smarters one of the best IPTV applications in 2025:",
-    "benefit1Title": "Modern and intuitive interface",
-    "benefit1Description": "Simple navigation for all user profiles.",
-    "benefit2Title": "Multiple connections",
-    "benefit2Description": "Supports Xtream Codes credentials, M3U links, and local files.",
-    "benefit3Title": "Integrated TV Guide (EPG)",
-    "benefit3Description": "Access to program schedules and show times.",
-    "benefit4Title": "High quality streaming",
-    "benefit4Description": "Enjoy your channels in HD, Full HD or 4K depending on your subscription.",
-    "benefit5Title": "Multi-screen feature",
-    "benefit5Description": "Watch different content on multiple devices simultaneously.",
-    "benefit6Title": "Parental control & resume playback",
-    "benefit6Description": "Secure access to children's content and resume where you left off.",
-    "downloadTitle": "How to download and install IPTV Smarters Pro APK",
+    "whyChooseTitle": "Why Canadian subscribers use Smarters",
+    "whyChooseSubtitle": "Popular reasons viewers in Canada pick Smarters Pro or Lite with an iptv canada plan:",
+    "benefit1Title": "Clean, easy layout",
+    "benefit1Description": "Straightforward menus for live TV, movies, and series — friendly for all ages.",
+    "benefit2Title": "Flexible login options",
+    "benefit2Description": "Connect with Xtream API, M3U URL, or local playlist files from your provider.",
+    "benefit3Title": "Built-in TV guide (EPG)",
+    "benefit3Description": "See what’s on now and next for supported channel lists.",
+    "benefit4Title": "HD through 4K playback",
+    "benefit4Description": "Stream in the quality your plan and internet allow — ideal for sports and PPV.",
+    "benefit5Title": "Use on more than one screen",
+    "benefit5Description": "Premium multi-connection plans let family members watch on separate devices.",
+    "benefit6Title": "Parental lock & resume",
+    "benefit6Description": "Restrict adult categories and continue shows where you left off.",
+    "downloadTitle": "Download & install Smarters Pro (APK or store)",
     "smartTvGuideTitle": "How to install IPTV Smarters Pro on a Smart TV (Samsung/LG)",
     "smartTvGuideDescription": "The IPTV Smarters Pro application may not be available on the Google Play Store in some regions. Here is a simple guide to download and install it manually:",
-    "downloadSectionTitle": "IPTV Smarters – Download for all devices",
-    "downloadSectionDescription": "IPTV Smarters is compatible with all types of devices:",
+    "downloadSectionTitle": "Smarters downloads for Canadian devices",
+    "downloadSectionDescription": "Install on the platforms most used in Canada:",
     "downloadSectionDevices": "📱 Smartphones (Android & iOS) 💻 Computers (Windows & macOS) 📺 Smart TVs (LG, Samsung, Android TV, Fire TV) 🌐 Web browsers via WebTV",
     "downloadAvailable": "Download available here:",
     "iboPlayerSectionTitle": "IBO Player (alternative IPTV app)",
@@ -391,7 +390,7 @@
     "liteBenefit5": "Connection via Xtream Codes API or M3U link",
     "liteDescription": "Simply enter your IPTV Subscription information to start watching your favorite content.",
     "contactTitle": "📩 Please contact us",
-    "contactDescription": "Would you like to use Smarters Player Lite or IPTV Smarters pro application for your IPTV Subscription in France?",
+    "contactDescription": "Want Smarters Player Lite or IPTV Smarters Pro on your Canadian devices? We’ll send official download links and personalized setup steps.",
     "contactAction": "Contact us now and we will send you the download link along with personalized installation instructions. You can find the WhatsApp contact on the main page below:",
     "contactLink": "https://www.pro-iptvsmarters.com/ca/#pricing",
     "howToInstall": "How to install?",
@@ -484,7 +483,7 @@
     "firestickStep16Title": "Step 16:",
     "firestickStep16Content": "click on delete again Great! You now have the IPTV Smarters application on Firestick.",
     "firestickHowToUseTitle": "How to use IPTV Smarters on Firestick?",
-    "firestickHowToUseContent": "As I mentioned earlier, IPTV Smarters does not have its own channels. It's just a facilitator that allows you to stream the channels you have access to via the IPTV service provider in France. Therefore, to use iptv smarters, you must be subscribed to our service:",
+    "firestickHowToUseContent": "IPTV Smarters does not include channels by itself — it plays the lineup from your provider. To use it on Firestick in Canada, start with an active iptv subscription from us, then add your login:",
     "officielIptvPricingLink": "https://www.pro-iptvsmarters.com/ca/#pricing",
     "firestickTermsTitle": "When you run the iptv smarters application for the first time, the terms of use will be the first window. Scroll down and click Accept",
     "firestickAddUserTitle": "This is the window you land on next. You must start by clicking either Add user in the top right corner, or Add new user in the middle of the screen",
@@ -504,8 +503,8 @@
     "heroSubtitle": "Start your IPTV business in Canada and earn with our reseller program. Sell iptv subscription plans to customers nationwide — prices in CAD.",
     "heroButton": "Get Your IPTV Panel Today!",
     "pricingSectionTitle": "Reseller Panel Offers",
-    "pricingSectionDescription": "With the IPTV Shop reseller program, you don't need any equipment. Access your own panel and instantly activate IPTV subscriptions for your clients.",
-    "pricingSectionDescription2": "Our IPTV panel subscriptions for IPTV Smarters are compatible with all devices and applications and can be used worldwide.",
+    "pricingSectionDescription": "Launch an IPTV resale business in Canada with no warehouse or hardware — your panel activates CAD subscriptions for clients in minutes.",
+    "pricingSectionDescription2": "Reseller credits work with Smarters, MAG, Firestick, Smart TV, and iptv box apps — sell under your brand to customers across Canada.",
     "whyTitle": "Why become an IPTV Smarters reseller?",
     "whyFeature1": "Enjoy the best rates for IPTV resellers with IPTV Shop.",
     "whyFeature2": "Keep full control over your IPTV services.",
