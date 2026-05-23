@@ -4,6 +4,7 @@
  import { motion } from 'framer-motion';
  import { Star } from 'lucide-react';
  import { useLanguage } from '@/contexts/LanguageContext';
+import { getLocaleSurface } from '@/lib/i18n/locale-surface';
  
  const canadaTestimonials = [
   {
@@ -130,9 +131,15 @@ interface TestimonialsColumnProps {
   className?: string;
   testimonials: TestimonialItem[];
   duration?: number;
+  cardClassName: string;
 }
 
-const TestimonialsColumn = ({ className, testimonials, duration = 10 }: TestimonialsColumnProps) => {
+const TestimonialsColumn = ({
+  className,
+  testimonials,
+  duration = 10,
+  cardClassName,
+}: TestimonialsColumnProps) => {
   const [isPaused, setIsPaused] = React.useState(false);
 
   return (
@@ -158,7 +165,7 @@ const TestimonialsColumn = ({ className, testimonials, duration = 10 }: Testimon
           {testimonials.map(({ text, name, location }, testimonialIndex) => (
             <motion.div 
               key={testimonialIndex} 
-              className="p-5 rounded-2xl border border-[#e5e7eb] bg-white/80 backdrop-blur-sm hover:border-[#2563eb]/30 transition-all duration-500 group shadow-sm"
+              className={`${cardClassName} transition-all duration-500 group hover:shadow-lg`}
               whileHover={{ scale: 1.02, y: -2 }}
               transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             >
@@ -209,13 +216,17 @@ const TestimonialsColumn = ({ className, testimonials, duration = 10 }: Testimon
  
 export default function TestimonialsSection() {
   const { t, locale } = useLanguage();
+  const surface = getLocaleSurface(locale);
   const testimonials = locale === "ca" ? canadaTestimonials : defaultTestimonials;
   const firstColumn = testimonials.slice(0, 3);
   const secondColumn = testimonials.slice(3, 6);
   const thirdColumn = testimonials.slice(6, 9);
 
   return (
-    <section id="testimonials" className="py-12 lg:py-20 xl:py-24 2xl:py-28 relative overflow-hidden bg-white">
+    <section
+      id="testimonials"
+      className={`py-12 lg:py-20 xl:py-24 2xl:py-28 relative overflow-hidden ${locale === "ca" ? "bg-gradient-to-b from-white to-slate-50/50" : "bg-white"}`}
+    >
       <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 relative">
         <motion.div
           className="text-center mb-12"
@@ -261,16 +272,22 @@ export default function TestimonialsSection() {
           transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1], delay: 0.15 }}
         >
           <div className="flex justify-center gap-6 xl:gap-8 2xl:gap-10 [mask-image:linear-gradient(to_bottom,transparent_0%,black_20%,black_80%,transparent_100%)] max-h-[600px] xl:max-h-[700px] 2xl:max-h-[800px] overflow-hidden">
-            <TestimonialsColumn testimonials={firstColumn} duration={20} />
+            <TestimonialsColumn
+              testimonials={firstColumn}
+              duration={20}
+              cardClassName={surface.testimonialCard}
+            />
             <TestimonialsColumn
               testimonials={secondColumn}
               className="hidden md:block"
               duration={25}
+              cardClassName={surface.testimonialCard}
             />
             <TestimonialsColumn
               testimonials={thirdColumn}
               className="hidden lg:block"
               duration={22}
+              cardClassName={surface.testimonialCard}
             />
           </div>
         </motion.div>

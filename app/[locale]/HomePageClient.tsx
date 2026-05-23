@@ -14,6 +14,7 @@ import { openWhatsApp } from "@/lib/whatsapp";
 import { shouldReduceAnimations, isMobile } from "@/lib/utils/performance";
 import { getBlogUrl, isBlogAvailableInLocale } from "@/lib/utils/blog-slugs";
 import type { BlogPost } from "@/lib/admin/blog-shared";
+import { getLocaleSurface } from "@/lib/i18n/locale-surface";
 
 // Lazy load non-critical components - use dynamic imports with ssr: false for better performance
 const ContentCarousel = lazy(() => import("@/components/ContentCarousel"));
@@ -37,10 +38,10 @@ export default function Home() {
   const { t, locale, translations } = useLanguage();
   const pricingContent = translations.pricing as Record<string, string | boolean> | undefined;
   const showPremiumPlans = isPremiumPlansSectionEnabled(pricingContent);
-  const pricingCurrencyNote =
-    typeof pricingContent?.currencyNote === "string" ? pricingContent.currencyNote : "";
   const pricingSubtitle =
     typeof pricingContent?.subtitle === "string" ? pricingContent.subtitle : "";
+  const isCanadaHome = locale === "ca";
+  const surface = getLocaleSurface(locale);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   const [reduceAnimations, setReduceAnimations] = useState(false);
   const [latestBlogs, setLatestBlogs] = useState<BlogPost[]>([]);
@@ -301,8 +302,12 @@ export default function Home() {
       <FeaturesSection />
       <DeviceCarousel />
 
+      <div className="flex flex-col">
       {/* Latest from blog - drive traffic to blog and main pages */}
-      <section id="latest-blog" className="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-white to-gray-50/50">
+      <section
+        id="latest-blog"
+        className={`py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-white to-gray-50/50 ${isCanadaHome ? "order-2" : ""}`}
+      >
         <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
           <motion.div
             initial={reduceAnimations ? { opacity: 1 } : { opacity: 0, y: 20 }}
@@ -333,7 +338,7 @@ export default function Home() {
                   >
                     <Link
                       href={getBlogUrl(blog, locale)}
-                      className="group block h-full bg-white border border-gray-200 rounded-xl p-5 sm:p-6 hover:border-[#2563eb]/30 hover:shadow-lg transition-all duration-300"
+                      className={`group block h-full bg-white p-5 sm:p-6 hover:border-[#2563eb]/30 hover:shadow-lg transition-all duration-300 ${surface.blogCard}`}
                     >
                       {blog.featuredImage && !blog.featuredImage.startsWith("blob:") && (
                         <div className="relative w-full aspect-video rounded-lg overflow-hidden mb-4 bg-gray-100">
@@ -372,7 +377,7 @@ export default function Home() {
           >
             <Link
               href={`/${locale}/blog/`}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#2563eb] text-white font-semibold text-sm hover:bg-[#1d4ed8] transition-colors shadow-md hover:shadow-lg"
+              className={`inline-flex items-center gap-2 px-6 py-3 ${isCanadaHome ? "rounded-xl" : "rounded-full"} bg-[#2563eb] text-white font-semibold text-sm hover:bg-[#1d4ed8] transition-colors shadow-md hover:shadow-lg`}
             >
               {t("home.viewAllArticles")}
               <ArrowRight className="w-4 h-4" />
@@ -382,7 +387,10 @@ export default function Home() {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="pt-8 pb-0 sm:pt-12 sm:pb-0 lg:pt-16 lg:pb-0 xl:pt-20 xl:pb-0 bg-white">
+      <section
+        id="pricing"
+        className={`pt-8 pb-0 sm:pt-12 sm:pb-0 lg:pt-16 lg:pb-0 xl:pt-20 xl:pb-0 bg-white ${isCanadaHome ? "order-1" : ""}`}
+      >
         <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
           <motion.div
             initial={reduceAnimations ? { opacity: 1 } : { opacity: 0, y: 20 }}
@@ -391,16 +399,9 @@ export default function Home() {
             transition={reduceAnimations ? {} : { duration: 0.3 }}
             className="text-center mb-12"
           >
-            {/* Red line */}
-            <div className="w-16 h-0.5 bg-red-600 mx-auto mb-6"></div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-4 xl:mb-6 2xl:mb-8 text-[#1a1a1a]">
               {t("pricing.title")}
             </h2>
-            {pricingCurrencyNote ? (
-              <p className="mx-auto max-w-2xl text-sm sm:text-base text-red-900/80 font-medium mb-3">
-                {pricingCurrencyNote}
-              </p>
-            ) : null}
             {pricingSubtitle ? (
               <p className="mx-auto max-w-3xl text-sm sm:text-base text-[#1a1a1a]/70 mb-6">
                 {pricingSubtitle}
@@ -417,8 +418,10 @@ export default function Home() {
               transition={{ duration: 0.3 }}
               className="flex justify-center mb-8"
             >
-              <div className="relative px-6 py-2.5 rounded-lg border-[3px] border-gray-300 bg-gray-100">
-                <div className="absolute inset-0 bg-[#2563eb] rounded-lg"></div>
+              <div
+                className={`relative px-6 py-2.5 border-[3px] border-gray-300 bg-gray-100 ${surface.planBadgeRadius}`}
+              >
+                <div className={`absolute inset-0 bg-[#2563eb] ${surface.planBadgeRadius}`}></div>
                 <span className="relative z-10 font-semibold text-base text-white uppercase tracking-wide">
                   {t("pricing.standardPlansLabel") || t("pricing.oneConnection")}
                 </span>
@@ -450,8 +453,10 @@ export default function Home() {
                 transition={{ duration: 0.3 }}
                 className="flex justify-center mb-8"
               >
-                <div className="relative px-6 py-2.5 rounded-lg border-[3px] border-gray-300 bg-gray-100">
-                  <div className="absolute inset-0 bg-[#2563eb] rounded-lg"></div>
+                <div
+                  className={`relative px-6 py-2.5 border-[3px] border-gray-300 bg-gray-100 ${surface.planBadgeRadius}`}
+                >
+                  <div className={`absolute inset-0 bg-[#2563eb] ${surface.planBadgeRadius}`}></div>
                   <span className="relative z-10 font-semibold text-base text-white uppercase tracking-wide">
                     {t("pricing.premiumPlansLabel") || t("pricing.twoConnectionsPremium")}
                   </span>
@@ -475,6 +480,7 @@ export default function Home() {
           ) : null}
         </div>
       </section>
+      </div>
 
       {/* Payment Methods Section */}
       <section id="payment-methods" className="pt-2 pb-0 bg-white">
@@ -554,7 +560,7 @@ export default function Home() {
                   y: -2
                 }}
                 whileTap={{ scale: 0.97 }}
-                className="bg-[#2563eb] text-white hover:bg-[#1d4ed8] shadow-lg hover:shadow-xl hover:ring-2 hover:ring-[#2563eb]/30 py-3 xl:py-4 2xl:py-5 px-8 xl:px-10 2xl:px-12 rounded-lg font-semibold text-base sm:text-lg xl:text-xl 2xl:text-2xl transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 group mx-auto"
+                className={`bg-[#2563eb] text-white hover:bg-[#1d4ed8] shadow-lg hover:shadow-xl hover:ring-2 hover:ring-[#2563eb]/30 py-3 xl:py-4 2xl:py-5 px-8 xl:px-10 2xl:px-12 ${surface.btnRadius} font-semibold text-base sm:text-lg xl:text-xl 2xl:text-2xl transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 group mx-auto`}
               >
                 <span>{t("common.buyNow")}</span>
                 <Monitor className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-x-1.5" />

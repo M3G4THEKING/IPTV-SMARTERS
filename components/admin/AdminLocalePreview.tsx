@@ -26,22 +26,14 @@ const PREMIUM_PLAN_KEYS = [
 function PlanPreviewGrid({
   plans,
   getValue,
-  isCa,
   variant,
 }: {
   plans: readonly { nameKey: string; priceKey: string; popular: boolean }[];
   getValue: GetValue;
-  isCa: boolean;
   variant: "standard" | "premium";
 }) {
-  const popularBorder = isCa ? "border-red-600 bg-red-50/60" : "border-blue-600 bg-blue-50";
-  const popularBadge = isCa ? "bg-red-700" : "bg-blue-600";
-  const checkColor = isCa ? "text-red-700" : "text-blue-600";
-  const popularBtn = isCa ? "bg-red-700 text-white" : "bg-blue-600 text-white";
-  const defaultBtn = "bg-gray-900 text-white";
-
   return (
-<div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
       {plans.map((plan) => {
         const name = getValue(plan.nameKey);
         const price = getValue(plan.priceKey);
@@ -49,14 +41,12 @@ function PlanPreviewGrid({
           <div
             key={plan.priceKey}
             className={`border-2 rounded-xl p-4 ${
-              plan.popular ? `${popularBorder} shadow-lg` : "border-gray-200 bg-white"
+              plan.popular ? "border-blue-600 bg-blue-50 shadow-lg" : "border-gray-200 bg-white"
             }`}
           >
             {plan.popular ? (
               <div className="text-center mb-2">
-                <span
-                  className={`inline-block text-xs ${popularBadge} text-white px-3 py-1 rounded-full font-semibold`}
-                >
+                <span className="inline-block text-xs bg-blue-600 text-white px-3 py-1 rounded-full font-semibold">
                   POPULAR
                 </span>
               </div>
@@ -67,17 +57,17 @@ function PlanPreviewGrid({
                 {price || "—"}
               </span>
             </div>
-<div className="space-y-1.5 text-xs text-gray-700">
+            <div className="space-y-1.5 text-xs text-gray-700">
               <p className="flex items-start gap-1.5">
-                <span className={checkColor}>✓</span>
+                <span className="text-blue-600">✓</span>
                 <span>{getValue("pricing.instantActivation")}</span>
               </p>
               <p className="flex items-start gap-1.5">
-                <span className={checkColor}>✓</span>
+                <span className="text-blue-600">✓</span>
                 <span>{getValue("pricing.liveChannels")}</span>
               </p>
               <p className="flex items-start gap-1.5">
-                <span className={checkColor}>✓</span>
+                <span className="text-blue-600">✓</span>
                 <span>
                   {variant === "premium"
                     ? getValue("pricing.adultContent")
@@ -89,7 +79,7 @@ function PlanPreviewGrid({
               type="button"
               disabled
               className={`w-full mt-4 py-2 rounded-lg font-semibold text-sm ${
-                plan.popular ? popularBtn : defaultBtn
+                plan.popular ? "bg-blue-600 text-white" : "bg-gray-900 text-white"
               }`}
             >
               {getValue("common.buyNow") || "Buy Now"}
@@ -106,11 +96,11 @@ export function AdminHeroPreview({ locale, getValue }: PreviewProps) {
 
   if (isCa) {
     return (
-      <div className="rounded-xl border border-red-200 bg-white p-6 sm:p-8">
+      <div className="rounded-xl border border-gray-200 bg-white p-6 sm:p-8">
         <p className="text-xs text-gray-500 mb-4 uppercase tracking-wide">
-          Canada homepage hero preview (/ca/)
+          Homepage hero preview ({locale})
         </p>
-        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-red-800/90 mb-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#2563eb] mb-3">
           {getValue("hero.eyebrow")}
         </p>
         <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 leading-tight mb-2 max-w-xl">
@@ -160,75 +150,48 @@ export function AdminPricingPreview({
   getValue,
   getBoolValue = () => true,
 }: PreviewProps & { getBoolValue?: GetBoolValue }) {
-  const isCa = locale === "ca";
   const showPremium = getBoolValue("pricing.showPremiumPlans", true);
-  const currencyNote = getValue("pricing.currencyNote");
   const subtitle = getValue("pricing.subtitle");
-  const tabAccent = isCa ? "bg-red-700" : "bg-[#2563eb]";
 
   return (
-    <div
-      className={`rounded-xl border p-6 sm:p-8 ${
-        isCa ? "border-red-200 bg-gradient-to-b from-red-50/40 to-white" : "border-gray-200 bg-white"
-      }`}
-    >
+    <div className="rounded-xl border border-gray-200 bg-white p-6 sm:p-8">
       <p className="text-xs text-gray-500 mb-4 uppercase tracking-wide">
-        {isCa ? "Canada homepage pricing preview (/ca/#pricing)" : "Homepage pricing preview"}
+        Homepage pricing preview ({locale})
       </p>
 
       <div className="text-center mb-8">
-        {isCa ? <div className="w-16 h-0.5 bg-red-600 mx-auto mb-4" /> : null}
         <h2 className="text-2xl sm:text-3xl font-bold text-[#1a1a1a] mb-3">
           {getValue("pricing.title")}
         </h2>
-        {currencyNote ? (
-          <p
-            className={`mx-auto max-w-2xl text-sm font-medium mb-2 ${
-              isCa ? "text-red-900/80" : "text-gray-600"
-            }`}
-          >
-            {currencyNote}
-          </p>
-        ) : null}
         {subtitle ? (
           <p className="mx-auto max-w-3xl text-sm text-[#1a1a1a]/70">{subtitle}</p>
         ) : null}
       </div>
-<div className="mb-10">
-        <div className="flex justify-center mb-6">
 
-<div className="relative px-6 py-2.5 rounded-lg border-[3px] border-gray-300 bg-gray-100">
-            <div className={`absolute inset-0 ${tabAccent} rounded-lg`} />
+      <div className="mb-10">
+        <div className="flex justify-center mb-6">
+          <div className="relative px-6 py-2.5 rounded-lg border-[3px] border-gray-300 bg-gray-100">
+            <div className="absolute inset-0 bg-[#2563eb] rounded-lg" />
             <span className="relative z-10 font-semibold text-sm text-white uppercase tracking-wide">
               {getValue("pricing.standardPlansLabel") || getValue("pricing.oneConnection")}
             </span>
           </div>
         </div>
-        <PlanPreviewGrid
-          plans={STANDARD_PLAN_KEYS}
-          getValue={getValue}
-          isCa={isCa}
-          variant="standard"
-        />
+        <PlanPreviewGrid plans={STANDARD_PLAN_KEYS} getValue={getValue} variant="standard" />
       </div>
 
       {showPremium ? (
         <div>
           <div className="flex justify-center mb-6">
             <div className="relative px-6 py-2.5 rounded-lg border-[3px] border-gray-300 bg-gray-100">
-<div className={`absolute inset-0 ${tabAccent} rounded-lg`} />
+              <div className="absolute inset-0 bg-[#2563eb] rounded-lg" />
               <span className="relative z-10 font-semibold text-sm text-white uppercase tracking-wide">
                 {getValue("pricing.premiumPlansLabel") ||
                   getValue("pricing.twoConnectionsPremium")}
               </span>
             </div>
           </div>
-          <PlanPreviewGrid
-            plans={PREMIUM_PLAN_KEYS}
-            getValue={getValue}
-            isCa={isCa}
-            variant="premium"
-          />
+          <PlanPreviewGrid plans={PREMIUM_PLAN_KEYS} getValue={getValue} variant="premium" />
         </div>
       ) : (
         <p className="text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">

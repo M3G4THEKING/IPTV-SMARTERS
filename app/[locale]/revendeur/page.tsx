@@ -167,7 +167,6 @@ export default function ResellerPage() {
             transition={reduceAnimations ? {} : { duration: 0.4 }}
             className="text-center mb-8"
           >
-            <div className="w-16 h-0.5 bg-red-600 mx-auto mb-4"></div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 text-[#1a1a1a]">
               {t("reseller.pricingSectionTitle")}
             </h2>
@@ -244,7 +243,7 @@ export default function ResellerPage() {
             </h3>
             {t("reseller.pricingCurrencyNote") &&
             !t("reseller.pricingCurrencyNote").startsWith("reseller.") ? (
-              <p className="text-center text-sm text-red-900/80 font-medium mb-4 sm:mb-6 px-2">
+              <p className="text-center text-sm text-[#1a1a1a]/70 font-medium mb-4 sm:mb-6 px-2">
                 {t("reseller.pricingCurrencyNote")}
               </p>
             ) : (

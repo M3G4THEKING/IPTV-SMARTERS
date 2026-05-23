@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { shouldReduceAnimations, isMobile, getImageQuality } from "@/lib/utils/performance";
+import { getLocaleSurface } from "@/lib/i18n/locale-surface";
 
 interface Feature {
   id: string;
@@ -21,7 +22,8 @@ interface Feature {
 }
 
 export default function FeaturesSection() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const surface = getLocaleSurface(locale);
   const reduceAnimations = shouldReduceAnimations();
   const mobile = isMobile();
   const imageQuality = getImageQuality();
@@ -64,8 +66,14 @@ export default function FeaturesSection() {
       descriptionKey: "features.support.description",
     },
   ];
+
+  const featureItems = locale === "ca" ? [...features].reverse() : features;
+
   return (
-    <section id="features" className="pt-12 pb-6 sm:pt-16 sm:pb-8 lg:pt-20 lg:pb-10 xl:pt-24 xl:pb-12 2xl:pt-28 2xl:pb-16 bg-white">
+    <section
+      id="features"
+      className={`pt-12 pb-6 sm:pt-16 sm:pb-8 lg:pt-20 lg:pb-10 xl:pt-24 xl:pb-12 2xl:pt-28 2xl:pb-16 ${surface.sectionSoftBg || "bg-white"}`}
+    >
       <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         {/* Section Heading - Simple h2 for accessibility */}
         <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold text-center mb-4 xl:mb-6 2xl:mb-8 text-[#1a1a1a] font-heading">
@@ -81,7 +89,7 @@ export default function FeaturesSection() {
         
         {/* Features Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-12 lg:gap-18 xl:gap-20 2xl:gap-24">
-          {features.map((feature, index) => (
+          {featureItems.map((feature, index) => (
             <motion.div
               key={feature.id}
               initial={reduceAnimations ? { opacity: 1 } : { opacity: 0, y: 20 }}

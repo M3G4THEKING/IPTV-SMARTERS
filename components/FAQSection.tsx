@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { getLocaleSurface } from "@/lib/i18n/locale-surface";
 
 interface FAQItem {
   id: string;
@@ -90,7 +91,8 @@ const faqData: FAQItem[] = [
 ];
 
 export default function FAQSection() {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const surface = getLocaleSurface(locale);
   const [openIndices, setOpenIndices] = useState<Set<number>>(new Set());
 
   const toggleItem = (index: number) => {
@@ -106,7 +108,10 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" className="pt-0 pb-0 xl:pt-4 2xl:pt-6 bg-white">
+    <section
+      id="faq"
+      className={`pt-0 pb-0 xl:pt-4 2xl:pt-6 ${locale === "ca" ? "bg-slate-50/30" : "bg-white"}`}
+    >
       <div className="max-w-5xl xl:max-w-6xl 2xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         {/* Section Heading */}
         <motion.h2
@@ -120,7 +125,7 @@ export default function FAQSection() {
         </motion.h2>
 
         {/* FAQ Accordion */}
-        <div className="bg-white rounded-2xl shadow-lg border-2 border-[#e5e7eb] overflow-hidden">
+        <div className={`bg-white overflow-hidden ${surface.faqWrapper}`}>
           {faqData.map((faq, index) => {
             const isOpen = openIndices.has(index);
 
@@ -169,7 +174,9 @@ export default function FAQSection() {
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                       className="overflow-hidden bg-gradient-to-b from-white to-[#f8fafc]"
                     >
-                      <div className="px-6 xl:px-8 2xl:px-10 py-5 xl:py-6 2xl:py-8 border-l-4 border-[#2563eb] bg-white/50">
+                      <div
+                        className={`px-6 xl:px-8 2xl:px-10 py-5 xl:py-6 2xl:py-8 bg-white/50 ${surface.faqAnswerBorder}`}
+                      >
                         <p className="text-[#1a1a1a]/80 leading-relaxed text-sm sm:text-base xl:text-lg 2xl:text-xl">
                           {t(faq.answerKey)}
                         </p>

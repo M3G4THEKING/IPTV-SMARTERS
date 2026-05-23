@@ -6,9 +6,11 @@ import { MessageCircle, Mail } from "lucide-react";
 import { getWhatsAppUrl } from "@/lib/whatsapp";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { getContactEmailForLocale } from "@/lib/utils/contact-email";
+import { getLocaleSurface } from "@/lib/i18n/locale-surface";
 
 export default function CTASection() {
   const { t, locale } = useLanguage();
+  const surface = getLocaleSurface(locale);
   const email = getContactEmailForLocale(locale);
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -34,11 +36,11 @@ export default function CTASection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.3 }}
-          className="relative rounded-2xl bg-white border border-[#1a1a1a]/10 p-7 sm:p-8 lg:p-10 overflow-hidden shadow-sm"
+          className={`relative overflow-hidden ${surface.ctaPanel}`}
         >
           {/* Mouse tracking gradient - kept as requested */}
           <motion.div
-            className="absolute inset-0 rounded-2xl pointer-events-none transition-opacity duration-500"
+            className={`absolute inset-0 ${surface.cardRadius} pointer-events-none transition-opacity duration-500`}
             style={{
               opacity: isHovering ? 1 : 0,
               background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(37, 99, 235, 0.06), transparent 60%)`,

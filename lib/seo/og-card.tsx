@@ -16,7 +16,7 @@ function truncate(text: string, max: number): string {
 }
 
 function accentForLocale(locale: Locale): string {
-  return locale === "ca" ? "#c8102e" : "#2563eb";
+  return "#2563eb";
 }
 
 type OgCardProps = {

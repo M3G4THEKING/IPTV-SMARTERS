@@ -39,10 +39,10 @@ export default function CanadaLandingExtras() {
     <>
       <section
         aria-label="IPTV Canada service highlights"
-        className="border-y border-red-100 bg-gradient-to-b from-red-50/40 to-white py-10 sm:py-12"
+        className="border-y border-gray-100 bg-gradient-to-b from-gray-50/50 to-white py-10 sm:py-12"
       >
         <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-          <p className="text-center text-sm font-semibold uppercase tracking-wider text-red-800/90 mb-6">
+          <p className="text-center text-sm font-semibold uppercase tracking-wider text-[#2563eb] mb-6">
             {t("canadaLanding.statsEyebrow")}
           </p>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
@@ -75,9 +75,9 @@ export default function CanadaLandingExtras() {
             {steps.map((step) => (
               <div
                 key={step.n}
-                className="rounded-2xl border border-gray-200 bg-gray-50/50 p-6 sm:p-8"
+                className="rounded-3xl border border-slate-200/90 bg-slate-50/60 p-6 sm:p-8 shadow-sm"
               >
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-red-700 text-white font-bold text-lg">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#2563eb] text-white font-bold text-lg">
                   {step.n}
                 </span>
                 <h3 className="mt-4 text-lg font-bold text-[#1a1a1a]">{step.title}</h3>
@@ -90,13 +90,13 @@ export default function CanadaLandingExtras() {
           <div className="mt-10 flex flex-wrap justify-center gap-3">
             <Link
               href="#pricing"
-              className="inline-flex items-center rounded-lg bg-red-700 px-6 py-3 text-sm font-semibold text-white hover:bg-red-800 transition-colors"
+              className="inline-flex items-center rounded-xl bg-[#2563eb] px-6 py-3 text-sm font-semibold text-white hover:bg-[#1d4ed8] transition-colors shadow-md"
             >
               {t("canadaLanding.ctaPlans")}
             </Link>
             <Link
               href="#cta"
-              className="inline-flex items-center rounded-lg border border-red-300 bg-white px-6 py-3 text-sm font-semibold text-red-900 hover:bg-red-50 transition-colors"
+              className="inline-flex items-center rounded-xl border border-[#2563eb]/30 bg-white px-6 py-3 text-sm font-semibold text-[#2563eb] hover:bg-[#2563eb] hover:text-white transition-colors"
             >
               {t("canadaLanding.ctaTrial")}
             </Link>

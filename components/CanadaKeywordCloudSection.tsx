@@ -38,7 +38,7 @@ export default function CanadaKeywordCloudSection() {
     <Link
       key={`${item.keyword}-${index}`}
       href={getCanadaKeywordHref(locale, index, guide, firestick, smartTv)}
-      className="inline-flex items-center rounded-full border border-red-300/50 bg-white px-3.5 py-1.5 text-sm font-medium text-red-900 hover:bg-red-700 hover:text-white hover:border-red-700 transition-colors"
+      className="inline-flex items-center rounded-full border border-[#2563eb]/30 bg-white px-3.5 py-1.5 text-sm font-medium text-[#2563eb] hover:bg-[#2563eb] hover:text-white transition-colors"
     >
       {item.label}
     </Link>
@@ -51,7 +51,7 @@ export default function CanadaKeywordCloudSection() {
       aria-labelledby="canada-keywords-heading"
     >
       <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-        <div className="rounded-2xl border border-red-200/60 bg-red-50/30 p-6 sm:p-8">
+        <div className="rounded-2xl border border-gray-200 bg-gray-50/50 p-6 sm:p-8">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-3">
             <div className="min-w-0 flex-1">
               <h2
@@ -70,7 +70,7 @@ export default function CanadaKeywordCloudSection() {
                 onClick={() => setIsOpen((prev) => !prev)}
                 aria-expanded={isOpen}
                 aria-controls={panelId}
-                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-red-300/60 bg-white px-4 py-2.5 text-sm font-semibold text-red-900 hover:bg-red-700 hover:text-white hover:border-red-700 transition-colors self-start sm:self-center"
+                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg border border-[#2563eb]/30 bg-white px-4 py-2.5 text-sm font-semibold text-[#2563eb] hover:bg-[#2563eb] hover:text-white transition-colors self-start sm:self-center"
               >
                 {isOpen
                   ? t("canadaKeywords.collapseLabel")
@@ -83,7 +83,7 @@ export default function CanadaKeywordCloudSection() {
             ) : null}
           </div>
 
-          <div className="flex flex-wrap gap-2.5 sm:gap-3 pt-2 border-t border-red-200/40">
+          <div className="flex flex-wrap gap-2.5 sm:gap-3 pt-2 border-t border-gray-200/80">
             {priorityKeywords.map((item, index) => renderPill(item, index))}
           </div>
 
@@ -93,7 +93,7 @@ export default function CanadaKeywordCloudSection() {
               hidden={!isOpen}
               className={isOpen ? "block mt-3" : "hidden"}
             >
-              <div className="flex flex-wrap gap-2.5 sm:gap-3 pt-3 border-t border-red-200/30">
+              <div className="flex flex-wrap gap-2.5 sm:gap-3 pt-3 border-t border-gray-200/60">
                 {extraKeywords.map((item, index) =>
                   renderPill(item, priorityKeywords.length + index)
                 )}

@@ -118,7 +118,7 @@ function CanadaHeroContent({
 
   return (
     <div className="relative z-10 flex flex-col gap-5 sm:gap-6 min-w-0 w-full text-left">
-      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-red-800/90">
+      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#2563eb]">
         {t("hero.eyebrow")}
       </p>
 
@@ -199,7 +199,10 @@ export default function HeroSection() {
 
   if (isCa) {
     return (
-      <section id="home" className="relative overflow-visible bg-white pt-20 pb-8 sm:pt-24 lg:pt-20 lg:pb-12">
+      <section
+        id="home"
+        className="relative overflow-visible bg-gradient-to-b from-slate-50/70 via-white to-white pt-20 pb-8 sm:pt-24 lg:pt-20 lg:pb-12"
+      >
         <div className="max-w-7xl xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
           <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_48%] lg:gap-x-12 xl:gap-x-14 lg:items-center">
             <div className="min-w-0">

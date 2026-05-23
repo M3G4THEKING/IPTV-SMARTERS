@@ -5,6 +5,7 @@ import { Monitor } from "lucide-react";
 import { openWhatsApp } from "@/lib/whatsapp";
 import { shouldReduceAnimations, isMobile } from "@/lib/utils/performance";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { getLocaleSurface } from "@/lib/i18n/locale-surface";
 
 interface PricingCardProps {
   name: string;
@@ -27,9 +28,11 @@ export default function PricingCard({
   guaranteeText = "5-day refund guarantee",
   buttonText = "Buy Now",
 }: PricingCardProps) {
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
+  const surface = getLocaleSurface(locale);
   const reduceAnimations = shouldReduceAnimations();
   const mobile = isMobile();
+  const isCa = locale === "ca";
   
   return (
     <motion.div
@@ -58,17 +61,21 @@ export default function PricingCard({
           ease: "linear"
         }
       }}
-      className={`relative p-4 sm:p-5 xl:p-6 2xl:p-8 rounded-2xl backdrop-blur-sm ${
+      className={`relative p-4 sm:p-5 xl:p-6 2xl:p-8 backdrop-blur-sm ${surface.cardRadius} ${
         popular
-          ? "bg-[#2563eb] text-white shadow-2xl border-2 border-[#2563eb] ring-2 ring-[#2563eb]/20"
-          : "bg-white text-[#1a1a1a] border-2 border-[#d1d5db] shadow-md hover:border-[#2563eb]/40 hover:shadow-xl hover:ring-2 hover:ring-[#2563eb]/10"
+          ? isCa
+            ? "bg-[#2563eb] text-white shadow-xl border border-[#2563eb] ring-4 ring-[#2563eb]/15"
+            : "bg-[#2563eb] text-white shadow-2xl border-2 border-[#2563eb] ring-2 ring-[#2563eb]/20"
+          : isCa
+            ? "bg-white text-[#1a1a1a] border border-slate-200 shadow-lg hover:border-[#2563eb]/35 hover:shadow-2xl hover:ring-1 hover:ring-[#2563eb]/15"
+            : "bg-white text-[#1a1a1a] border-2 border-[#d1d5db] shadow-md hover:border-[#2563eb]/40 hover:shadow-xl hover:ring-2 hover:ring-[#2563eb]/10"
       }`}
       style={{
         transition: "box-shadow 0.075s, border-color 0.075s, ring 0.075s"
       }}
     >
       {/* Subtle background gradient for depth */}
-      <div className={`absolute inset-0 rounded-2xl opacity-50 pointer-events-none ${
+      <div className={`absolute inset-0 ${surface.cardRadius} opacity-50 pointer-events-none ${
         popular 
           ? "bg-gradient-to-br from-white/10 to-transparent" 
           : "bg-gradient-to-br from-[#2563eb]/5 to-transparent"
@@ -130,7 +137,7 @@ export default function PricingCard({
           y: -2
         }}
         whileTap={reduceAnimations ? {} : { scale: 0.97 }}
-        className={`w-full py-2.5 xl:py-3 2xl:py-4 px-4 xl:px-5 2xl:px-6 rounded-lg font-semibold text-sm sm:text-base xl:text-lg 2xl:text-xl flex items-center justify-center gap-2 xl:gap-3 2xl:gap-4 transition-all duration-200 relative z-10 group cursor-pointer ${
+        className={`w-full py-2.5 xl:py-3 2xl:py-4 px-4 xl:px-5 2xl:px-6 ${surface.btnRadius} font-semibold text-sm sm:text-base xl:text-lg 2xl:text-xl flex items-center justify-center gap-2 xl:gap-3 2xl:gap-4 transition-all duration-200 relative z-10 group cursor-pointer ${
           popular
             ? "bg-white text-[#2563eb] hover:bg-gray-50 shadow-lg hover:shadow-xl hover:ring-2 hover:ring-white/50"
             : "bg-[#2563eb] text-white hover:bg-[#1d4ed8] shadow-lg hover:shadow-xl hover:ring-2 hover:ring-[#2563eb]/30"

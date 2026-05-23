@@ -32,23 +32,6 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Canada regional locale — subtle visual differentiation on /ca/ */
-[data-locale="ca"] {
-  --color-accent-blue: #c8102e;
-}
-
-[data-locale="ca"] .text-\[\#2563eb\] {
-  color: var(--color-accent-blue);
-}
-
-[data-locale="ca"] .bg-\[\#2563eb\] {
-  background-color: var(--color-accent-blue);
-}
-
-[data-locale="ca"] .decoration-\[\#2563eb\] {
-  text-decoration-color: var(--color-accent-blue);
-}
-
 /* Scroll margin for smooth anchor scrolling */
 section[id] {
   scroll-margin-top: 100px;
@@ -125,4 +108,13 @@ h1, h2, h3, h4, h5, h6 {
   html {
     font-size: 18px;
   }
+}
+
+/* Canada locale: subtle surface differences (same blue brand) */
+[data-locale="ca"] #pricing {
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 45%, #ffffff 100%);
+}
+
+[data-locale="ca"] #latest-blog {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
 }

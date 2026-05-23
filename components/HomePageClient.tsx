@@ -432,16 +432,9 @@ export default function Home() {
             transition={reduceAnimations ? {} : { duration: 0.3 }}
             className="text-center mb-12"
           >
-            {/* Red line */}
-            <div className="w-16 h-0.5 bg-red-600 mx-auto mb-6"></div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-bold mb-4 xl:mb-6 2xl:mb-8 text-[#1a1a1a]">
               {t("pricing.title")}
             </h2>
-            {t("pricing.currencyNote") ? (
-              <p className="mx-auto max-w-2xl text-sm sm:text-base text-red-900/80 font-medium mb-3">
-                {t("pricing.currencyNote")}
-              </p>
-            ) : null}
             {t("pricing.subtitle") ? (
               <p className="mx-auto max-w-3xl text-sm sm:text-base text-[#1a1a1a]/70 mb-6">
                 {t("pricing.subtitle")}

@@ -651,13 +651,6 @@ export default function AdminDashboard() {
                 {/* Hero Section Editor */}
                 {activeSection === "hero" && (
                   <div className="space-y-6">
-                    {activeLocale === "ca" && (
-                      <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
-                        <strong>Canada homepage</strong> — hero copy is saved in{" "}
-                        <code className="text-xs bg-white/80 px-1 rounded">ca.json</code> only. EN / ES / FR
-                        are not affected.
-                      </div>
-                    )}
                     <div className="bg-white rounded-xl border border-gray-200 p-6">
                       <h2 className="text-2xl font-medium text-black mb-1">
                         {activeLocale === "ca" ? "Canada Homepage Hero" : "Homepage Hero"}
@@ -796,14 +789,6 @@ export default function AdminDashboard() {
                 {/* Pricing Section Editor */}
                 {activeSection === "pricing" && (
                   <div className="space-y-6">
-                    {activeLocale === "ca" && (
-                      <AdminPricingPreview
-                        locale={activeLocale}
-                        getValue={getValue}
-                        getBoolValue={getBoolValue}
-                      />
-                    )}
-
                     {/* Section Settings */}
                     <div className="bg-white rounded-xl border border-gray-200 p-6">
                       <h2 className="text-2xl font-medium text-black mb-1">Pricing Section</h2>
@@ -838,9 +823,7 @@ export default function AdminDashboard() {
                           </div>
                         )}
 
-                        <div
-                          className={`grid gap-4 ${activeLocale === "ca" ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}
-                        >
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                               Currency code (SEO / schema)
@@ -853,30 +836,13 @@ export default function AdminDashboard() {
                               onChange={(e) =>
                                 updateValue("pricing.currencyCode", e.target.value.toUpperCase())
                               }
-                              className={`w-full px-4 py-3 bg-white border rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:border-transparent ${
-                                activeLocale === "ca"
-                                  ? "border-red-200 focus:ring-red-600"
-                                  : "border-gray-300 focus:ring-black"
-                              }`}
+                              className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
                             />
                             <p className="text-xs text-gray-500 mt-1">
                               ISO code for structured data. Card prices use the fields below (e.g.{" "}
                               {pricePlaceholder}).
                             </p>
                           </div>
-                          {activeLocale === "ca" && (
-                            <div>
-                              <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Currency note (shown on /ca/)
-                              </label>
-                              <input
-                                type="text"
-                                value={getValue("pricing.currencyNote")}
-                                onChange={(e) => updateValue("pricing.currencyNote", e.target.value)}
-                                className="w-full px-4 py-3 bg-white border border-red-200 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
-                              />
-                            </div>
-                          )}
                         </div>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -935,7 +901,7 @@ export default function AdminDashboard() {
                               onChange={(e) => updateValue("pricing.plan3Months", e.target.value)}
                               className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-black"
                             />
-                            <p className="text-xs text-red-800/90 mb-1">
+                            <p className="text-xs text-gray-600 mb-1">
                               Shown on cards as: <strong>{getValue("pricing.plan3MonthsPrice") || pricePlaceholder}</strong>
                             </p>
                             <input
@@ -943,11 +909,7 @@ export default function AdminDashboard() {
                               placeholder={`Price (e.g., ${pricePlaceholder})`}
                               value={getValue("pricing.plan3MonthsPrice")}
                               onChange={(e) => updateValue("pricing.plan3MonthsPrice", e.target.value)}
-                              className={`w-full px-3 py-2 bg-white border rounded-lg text-gray-900 text-sm focus:outline-none focus:ring-2 ${
-                                activeLocale === "ca"
-                                  ? "border-red-200 focus:ring-red-600"
-                                  : "border-gray-300 focus:ring-black"
-                              }`}
+                              className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-black"
                             />
                             <div className="text-xs text-gray-500 space-y-1">
                               <p>✓ {getValue("pricing.instantActivation") || "Instant Activation"}</p>
@@ -1401,7 +1363,7 @@ export default function AdminDashboard() {
                       </div>
                     </div>
 
-                    {(showPreview || activeLocale === "ca") && activeLocale !== "ca" && (
+                    {(showPreview || activeLocale === "ca") && (
                       <AdminPricingPreview
                         locale={activeLocale}
                         getValue={getValue}
@@ -1414,14 +1376,6 @@ export default function AdminDashboard() {
                 {/* WhatsApp & CTA messages */}
                 {activeSection === "whatsapp" && (
                   <div className="space-y-6">
-                    {activeLocale === "ca" && (
-                      <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
-                        <strong>Canada WhatsApp messages</strong> — these are the exact texts
-                        pre-filled when someone opens WhatsApp from <code className="text-xs bg-white/80 px-1 rounded">/ca/</code>.
-                        Keep CAD / Canadian support wording here; other locales use their own JSON files.
-                      </div>
-                    )}
-
                     <div className="bg-white rounded-xl border border-gray-200 p-6">
                       <h2 className="text-2xl font-medium text-black mb-1 flex items-center gap-2">
                         <MessageCircle className="w-6 h-6" />
@@ -1656,13 +1610,6 @@ export default function AdminDashboard() {
                 {/* Reseller Section Editor */}
                 {activeSection === "reseller" && (
                   <div className="space-y-6">
-                    {activeLocale === "ca" && (
-                      <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900">
-                        <strong>Canada reseller pricing</strong> is saved in{" "}
-                        <code className="text-xs bg-white/80 px-1 rounded">ca.json</code> only — set CAD
-                        credit prices below (independent from EN / ES / FR).
-                      </div>
-                    )}
                     <div className="bg-white rounded-xl border border-gray-200 p-6">
                       <h2 className="text-2xl font-medium text-black mb-1">Reseller Page</h2>
                       <p className="text-gray-500 text-sm mb-6">Edit your reseller program page</p>
@@ -1708,10 +1655,10 @@ export default function AdminDashboard() {
 
                     <div className="bg-white rounded-xl border border-gray-200 p-6">
                       <h3 className="text-lg font-medium text-black mb-4">Reseller credit pricing</h3>
-                      {activeLocale === "ca" && (
+                      {activeLocale === "ca" ? (
                         <div className="mb-4">
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Currency note (shown above plan cards)
+                            Currency note (optional, above plan cards)
                           </label>
                           <input
                             type="text"
@@ -1719,10 +1666,10 @@ export default function AdminDashboard() {
                             onChange={(e) =>
                               updateValue("reseller.pricingCurrencyNote", e.target.value)
                             }
-                            className="w-full px-3 py-2 border border-red-200 rounded-lg text-sm"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
                           />
                         </div>
-                      )}
+                      ) : null}
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         {(
                           [
