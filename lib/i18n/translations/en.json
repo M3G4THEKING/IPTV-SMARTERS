@@ -142,7 +142,7 @@
     }
   },
   "pricing": {
-    "showPremiumPlans": true,
+    "showPremiumPlans": false,
     "currencyCode": "USD",
     "title": "Our IPTV Subscription Prices",
     "oneConnection": "1 Connection",
