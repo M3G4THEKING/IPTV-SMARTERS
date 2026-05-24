@@ -145,7 +145,7 @@ async function writeLocalTranslationFile(locale: string, jsonContent: string): P
 }
 
 async function fetchGithubSha(filePath: string): Promise<string> {
-  if (!hasGithubBlogContext()) {
+  if (!hasGithubAdminContext()) {
     return "";
   }
   try {
@@ -156,7 +156,10 @@ async function fetchGithubSha(filePath: string): Promise<string> {
   }
 }
 
-function hasGithubBlogContext(): boolean {
+/** @deprecated Use hasGithubAdminContext */
+export const hasGithubBlogContext = hasGithubAdminContext;
+
+export function hasGithubAdminContext(): boolean {
   const token = process.env.GITHUB_TOKEN;
   const repoFull = process.env.GITHUB_REPO;
   const email = process.env.GITHUB_EMAIL;
@@ -205,7 +208,7 @@ export async function updateTranslationFile(
 
   await writeLocalTranslationFile(locale, jsonContent);
 
-  if (!hasGithubBlogContext()) {
+  if (!hasGithubAdminContext()) {
     return;
   }
 
@@ -214,12 +217,28 @@ export async function updateTranslationFile(
     remoteSha = await fetchGithubSha(filePath);
   }
 
-  await updateFileOnGitHub({
-    path: filePath,
-    content: jsonContent,
-    message: `Update ${locale} translations via admin dashboard`,
-    sha: remoteSha || undefined,
-  });
+  try {
+    await updateFileOnGitHub({
+      path: filePath,
+      content: jsonContent,
+      message: `Update ${locale} translations via admin dashboard`,
+      sha: remoteSha || undefined,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const isStaleSha =
+      /sha/i.test(message) && (/does not match/i.test(message) || /409/.test(message));
+    if (!isStaleSha) {
+      throw error;
+    }
+    const freshSha = await fetchGithubSha(filePath);
+    await updateFileOnGitHub({
+      path: filePath,
+      content: jsonContent,
+      message: `Update ${locale} translations via admin dashboard (retry)`,
+      sha: freshSha || undefined,
+    });
+  }
 }
 
 /**
@@ -235,6 +254,14 @@ export async function getAllTranslations(): Promise<Record<string, any>> {
       translations[locale] = data;
     } catch (error) {
       console.error(`Failed to fetch ${locale} translations:`, error);
+      const fallback = await readLocalTranslationFile(locale);
+      if (fallback) {
+        translations[locale] = {
+          content: fallback,
+          sha: "",
+          path: translationFilePath(locale),
+        };
+      }
     }
   }
 

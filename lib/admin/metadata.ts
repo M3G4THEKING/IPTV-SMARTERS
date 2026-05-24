@@ -3,7 +3,13 @@
  * Handles SEO metadata for all pages in all languages
  */
 
-import { getFileFromGitHub, updateFileOnGitHub } from './github';
+import { promises as fs } from "node:fs";
+import path from "node:path";
+import {
+  getFileFromGitHub,
+  hasGithubAdminContext,
+  updateFileOnGitHub,
+} from "./github";
 
 export interface PageMetadata {
   title: string;
@@ -59,31 +65,73 @@ function mergePageMetadataDefaults<T>(defaults: T, incoming: any): T {
   } as T;
 }
 
+function metadataFilePath(locale: string): string {
+  return `data/metadata/${locale}.json`;
+}
+
+async function readLocalMetadataFile(locale: string): Promise<MetadataContent | null> {
+  try {
+    const absolute = path.join(process.cwd(), metadataFilePath(locale));
+    const raw = await fs.readFile(absolute, "utf8");
+    return JSON.parse(raw) as MetadataContent;
+  } catch {
+    return null;
+  }
+}
+
+async function writeLocalMetadataFile(locale: string, jsonContent: string): Promise<void> {
+  const absolute = path.join(process.cwd(), metadataFilePath(locale));
+  await fs.mkdir(path.dirname(absolute), { recursive: true });
+  await fs.writeFile(absolute, `${jsonContent}\n`, "utf8");
+}
+
+async function fetchMetadataGithubSha(filePath: string): Promise<string> {
+  if (!hasGithubAdminContext()) {
+    return "";
+  }
+  try {
+    const file = await getFileFromGitHub(filePath);
+    return file.sha;
+  } catch {
+    return "";
+  }
+}
+
 /**
- * Get metadata file for a locale
+ * Get metadata file for a locale (local repo JSON first — matches what the site reads)
  */
 export async function getMetadataFile(locale: string): Promise<{
   content: MetadataContent;
   sha: string;
   path: string;
 }> {
-  const filePath = `data/metadata/${locale}.json`;
-  
+  const filePath = metadataFilePath(locale);
+  const defaults = getDefaultMetadata(locale);
+  const sha = await fetchMetadataGithubSha(filePath);
+  const local = await readLocalMetadataFile(locale);
+
+  if (local) {
+    return {
+      content: mergePageMetadataDefaults<MetadataContent>(defaults, local),
+      sha,
+      path: filePath,
+    };
+  }
+
   try {
     const file = await getFileFromGitHub(filePath);
-    const defaults = getDefaultMetadata(locale);
     const parsed = JSON.parse(file.content);
     return {
       content: mergePageMetadataDefaults<MetadataContent>(defaults, parsed),
       sha: file.sha,
       path: file.path,
     };
-  } catch (error: any) {
-    // If file doesn't exist, return default structure
-    if (error.message?.includes('404') || error.message?.includes('Not Found')) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    if (message.includes("404") || message.includes("Not Found")) {
       return {
-        content: getDefaultMetadata(locale),
-        sha: '',
+        content: defaults,
+        sha: "",
         path: filePath,
       };
     }
@@ -99,17 +147,46 @@ export async function updateMetadataFile(
   content: MetadataContent,
   sha: string
 ): Promise<void> {
-  const filePath = `data/metadata/${locale}.json`;
-  // Ensure we always write a complete schema (avoid missing keys when schema evolves)
-  const normalized = mergePageMetadataDefaults<MetadataContent>(getDefaultMetadata(locale), content);
+  const filePath = metadataFilePath(locale);
+  const normalized = mergePageMetadataDefaults<MetadataContent>(
+    getDefaultMetadata(locale),
+    content
+  );
   const jsonContent = JSON.stringify(normalized, null, 2);
-  
-  await updateFileOnGitHub({
-    path: filePath,
-    content: jsonContent,
-    message: `Update ${locale} page metadata via admin dashboard`,
-    sha: sha || undefined,
-  });
+
+  await writeLocalMetadataFile(locale, jsonContent);
+
+  if (!hasGithubAdminContext()) {
+    return;
+  }
+
+  let remoteSha = sha;
+  if (!remoteSha) {
+    remoteSha = await fetchMetadataGithubSha(filePath);
+  }
+
+  try {
+    await updateFileOnGitHub({
+      path: filePath,
+      content: jsonContent,
+      message: `Update ${locale} page metadata via admin dashboard`,
+      sha: remoteSha || undefined,
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const isStaleSha =
+      /sha/i.test(message) && (/does not match/i.test(message) || /409/.test(message));
+    if (!isStaleSha) {
+      throw error;
+    }
+    const freshSha = await fetchMetadataGithubSha(filePath);
+    await updateFileOnGitHub({
+      path: filePath,
+      content: jsonContent,
+      message: `Update ${locale} page metadata via admin dashboard (retry)`,
+      sha: freshSha || undefined,
+    });
+  }
 }
 
 /**

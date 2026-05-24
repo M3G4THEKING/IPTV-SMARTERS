@@ -33,6 +33,11 @@ import {
   MessageCircle,
 } from "lucide-react";
 import { translations as defaultTranslations } from "@/lib/i18n";
+import {
+  normalizeAdminTranslationContent,
+  normalizeAllTranslationsHero,
+  normalizeInlineHeroText,
+} from "@/lib/i18n/normalize-hero-text";
 import BlogsManager from "@/components/admin/BlogsManager";
 import DeploymentNotification from "@/components/admin/DeploymentNotification";
 import { AdminHeroPreview, AdminPricingPreview } from "@/components/admin/AdminLocalePreview";
@@ -141,6 +146,7 @@ export default function AdminDashboard() {
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [saveStatus, setSaveStatus] = useState<"idle" | "success" | "error">("idle");
+  const [saveErrorMessage, setSaveErrorMessage] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   const [showDeploymentNotification, setShowDeploymentNotification] = useState(false);
   const router = useRouter();
@@ -180,8 +186,8 @@ export default function AdminDashboard() {
   const loadTranslations = async () => {
     try {
       const response = await fetch("/api/admin/translations/");
-      const data = await response.json();
-      setTranslations(data);
+      const data = (await response.json()) as Translations;
+      setTranslations(normalizeAllTranslationsHero(data));
     } catch (error) {
       console.error("Failed to load translations:", error);
     }
@@ -225,6 +231,17 @@ export default function AdminDashboard() {
   const handleSave = async () => {
     setIsSaving(true);
     setSaveStatus("idle");
+    setSaveErrorMessage(null);
+
+    const entry = translations[activeLocale];
+    if (!entry?.content) {
+      setSaveStatus("error");
+      setSaveErrorMessage(
+        "Translations are not loaded for this language. Refresh the page and try again."
+      );
+      setIsSaving(false);
+      return;
+    }
 
     try {
       const response = await fetch("/api/admin/translations/", {
@@ -234,24 +251,28 @@ export default function AdminDashboard() {
         },
         body: JSON.stringify({
           locale: activeLocale,
-          content: translations[activeLocale].content,
-          sha: translations[activeLocale].sha,
+          content: normalizeAdminTranslationContent(entry.content),
+          sha: entry.sha ?? "",
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save translations");
+        const body = (await response.json().catch(() => ({}))) as { error?: string };
+        throw new Error(body.error || "Failed to save translations");
       }
 
       setSaveStatus("success");
       setShowDeploymentNotification(true);
       await loadTranslations();
-      
+
       setTimeout(() => setSaveStatus("idle"), 3000);
     } catch (error) {
       console.error("Save failed:", error);
       setSaveStatus("error");
-      setTimeout(() => setSaveStatus("idle"), 3000);
+      setSaveErrorMessage(
+        error instanceof Error ? error.message : "Failed to save translations"
+      );
+      setTimeout(() => setSaveStatus("idle"), 5000);
     } finally {
       setIsSaving(false);
     }
@@ -261,6 +282,17 @@ export default function AdminDashboard() {
   const handleSaveMetadata = async () => {
     setIsSaving(true);
     setSaveStatus("idle");
+    setSaveErrorMessage(null);
+
+    const entry = metadata[activeLocale];
+    if (!entry?.content) {
+      setSaveStatus("error");
+      setSaveErrorMessage(
+        "Metadata is not loaded for this language. Refresh the page and try again."
+      );
+      setIsSaving(false);
+      return;
+    }
 
     try {
       const response = await fetch("/api/admin/metadata/", {
@@ -270,24 +302,28 @@ export default function AdminDashboard() {
         },
         body: JSON.stringify({
           locale: activeLocale,
-          content: metadata[activeLocale]?.content || {},
-          sha: metadata[activeLocale]?.sha || "",
+          content: entry.content,
+          sha: entry.sha ?? "",
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to save metadata");
+        const body = (await response.json().catch(() => ({}))) as { error?: string };
+        throw new Error(body.error || "Failed to save metadata");
       }
 
       setSaveStatus("success");
       setShowDeploymentNotification(true);
       await loadMetadata();
-      
+
       setTimeout(() => setSaveStatus("idle"), 3000);
     } catch (error) {
       console.error("Save failed:", error);
       setSaveStatus("error");
-      setTimeout(() => setSaveStatus("idle"), 3000);
+      setSaveErrorMessage(
+        error instanceof Error ? error.message : "Failed to save metadata"
+      );
+      setTimeout(() => setSaveStatus("idle"), 5000);
     } finally {
       setIsSaving(false);
     }
@@ -353,7 +389,29 @@ export default function AdminDashboard() {
   // Update translation value (string or boolean)
   const updateValue = (path: string, value: string | boolean) => {
     const keys = path.split(".");
+    let storedValue: string | boolean = value;
+    if (typeof value === "string") {
+      if (keys[0] === "hero") {
+        storedValue = normalizeInlineHeroText(value);
+      } else if (keys[0] === "pricing") {
+        storedValue = value
+          .replace(/\r\n/g, " ")
+          .replace(/\n/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+      }
+    } else if (keys[0] === "pricing" && keys[keys.length - 1] === "showPremiumPlans") {
+      storedValue = value === true;
+    }
+
     const newTranslations = { ...translations };
+    if (!newTranslations[activeLocale]) {
+      newTranslations[activeLocale] = { content: {}, sha: "", path: "" };
+    }
+    if (!newTranslations[activeLocale].content) {
+      newTranslations[activeLocale].content = {};
+    }
+
     let current: Record<string, unknown> = newTranslations[activeLocale].content as Record<
       string,
       unknown
@@ -367,7 +425,7 @@ export default function AdminDashboard() {
       current = current[key] as Record<string, unknown>;
     }
 
-    current[keys[keys.length - 1]] = value;
+    current[keys[keys.length - 1]] = storedValue;
     setTranslations(newTranslations);
   };
 
@@ -547,6 +605,11 @@ export default function AdminDashboard() {
               </button>
             </div>
           </div>
+          {saveErrorMessage ? (
+            <p className="mt-3 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-4 py-2">
+              {saveErrorMessage}
+            </p>
+          ) : null}
         </div>
       </header>
 
@@ -737,6 +800,9 @@ export default function AdminDashboard() {
                                 rows={3}
                                 className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none"
                               />
+                              <p className="mt-1.5 text-xs text-gray-500">
+                                One paragraph on the live site — line breaks are flattened on save.
+                              </p>
                             </div>
                             {(["lead2", "lead3", "lead4", "lead5"] as const).map((key) => (
                               <div key={key}>
@@ -777,16 +843,48 @@ export default function AdminDashboard() {
                             </div>
                           </>
                         ) : (
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                              Description
-                            </label>
-                            <textarea
-                              value={getValue("hero.description")}
-                              onChange={(e) => updateValue("hero.description", e.target.value)}
-                              rows={4}
-                              className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none"
-                            />
+                          <div className="space-y-4 rounded-lg border border-gray-100 bg-gray-50/80 p-4">
+                            <p className="text-sm text-gray-600">
+                              The hero paragraph is one continuous block on the site (with links in
+                              the middle). Edit each part below — line breaks are removed
+                              automatically so text does not jump to a new line.
+                            </p>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-2">
+                                Opening sentence
+                              </label>
+                              <textarea
+                                value={getValue("hero.description")}
+                                onChange={(e) => updateValue("hero.description", e.target.value)}
+                                rows={3}
+                                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none"
+                              />
+                            </div>
+                            {(
+                              [
+                                ["channelsLink", "Channel link text (blue, links to pricing)"],
+                                ["description2", "After channel link"],
+                                ["officialSmartersLinkText", "Smarters Pro link label"],
+                                ["officialIboLinkText", "IBO player link label"],
+                                ["description3", "After player links (e.g. “, etc. (Smart TV…)”)"],
+                                ["m3uLink", "M3U / Xtream link text"],
+                                ["description4", "After M3U link"],
+                                ["freeTest", "Free test highlight"],
+                                ["description5", "Closing sentence"],
+                              ] as const
+                            ).map(([key, label]) => (
+                              <div key={key}>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">
+                                  {label}
+                                </label>
+                                <input
+                                  type="text"
+                                  value={getValue(`hero.${key}`)}
+                                  onChange={(e) => updateValue(`hero.${key}`, e.target.value)}
+                                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                                />
+                              </div>
+                            ))}
                           </div>
                         )}
                       </div>

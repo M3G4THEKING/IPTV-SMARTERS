@@ -3,6 +3,11 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { getTranslations, type Locale, locales, defaultLocale, detectLocaleFromCountry } from '@/lib/i18n';
+import {
+  buildLocalizedPath,
+  getLocaleFromPathname,
+  stripLocalePrefix,
+} from '@/lib/i18n/locale-path';
 import { getEnglishSlugFromLocalized, getInstallationSlug, isInstallationSlug, isResellerSlug, getResellerSlug, isLegalSlug, getLegalSlug } from '@/lib/utils/installation-slugs';
 import { getBlogUrl, findBlogByAnySlug, isBlogAvailableInLocale } from '@/lib/utils/blog-slugs';
 import { getPublishedLocales } from '@/lib/admin/blog-locales';
@@ -26,8 +31,8 @@ export function LanguageProvider({ children, initialLocale }: { children: ReactN
 
   // Update locale from URL path
   useEffect(() => {
-    const pathLocale = pathname.split('/')[1] as Locale;
-    if (locales.includes(pathLocale)) {
+    const pathLocale = getLocaleFromPathname(pathname);
+    if (pathLocale) {
       setLocaleState(pathLocale);
     }
   }, [pathname]);
@@ -42,8 +47,7 @@ export function LanguageProvider({ children, initialLocale }: { children: ReactN
     // Update URL to reflect new locale
     // Use window.location.pathname as fallback to ensure we get the actual current path
     const currentPath = typeof window !== 'undefined' ? window.location.pathname : pathname;
-    // Remove locale prefix and normalize path
-    const pathWithoutLocale = currentPath.replace(/^\/(en|es|fr|ca)/, '') || '/';
+    const pathWithoutLocale = stripLocalePrefix(currentPath);
     
     // Check if current path is an installation page and translate the slug
     let translatedPath = pathWithoutLocale;
@@ -76,7 +80,7 @@ export function LanguageProvider({ children, initialLocale }: { children: ReactN
                   if (fallback) {
                     targetLocale = fallback;
                   } else {
-                    router.replace(`/${newLocale}/blog/`);
+                    router.replace(buildLocalizedPath(newLocale, '/blog/'));
                     if (typeof window !== 'undefined') {
                       localStorage.setItem('preferred-locale', newLocale);
                     }
@@ -85,7 +89,7 @@ export function LanguageProvider({ children, initialLocale }: { children: ReactN
                 }
                 const newPath = getBlogUrl(blog, targetLocale);
                 if (newPath.includes('/blog//')) {
-                  router.replace(`/${newLocale}/blog/`);
+                  router.replace(buildLocalizedPath(newLocale, '/blog/'));
                 } else {
                   router.replace(newPath);
                 }
@@ -94,17 +98,14 @@ export function LanguageProvider({ children, initialLocale }: { children: ReactN
                 }
               } else {
                 // Blog not found, just change locale prefix
-                const newPath = `/${newLocale}${pathWithoutLocale}`;
-                router.replace(newPath);
+                router.replace(buildLocalizedPath(newLocale, pathWithoutLocale));
                 if (typeof window !== 'undefined') {
                   localStorage.setItem('preferred-locale', newLocale);
                 }
               }
             })
             .catch(() => {
-              // On error, just change locale prefix
-              const newPath = `/${newLocale}${pathWithoutLocale}`;
-              router.replace(newPath);
+              router.replace(buildLocalizedPath(newLocale, pathWithoutLocale));
               if (typeof window !== 'undefined') {
                 localStorage.setItem('preferred-locale', newLocale);
               }
@@ -146,8 +147,7 @@ export function LanguageProvider({ children, initialLocale }: { children: ReactN
       }
     }
     
-    const newPath = `/${newLocale}${translatedPath === '/' ? '' : translatedPath}`;
-    router.replace(newPath);
+    router.replace(buildLocalizedPath(newLocale, translatedPath));
     // Store preference
     if (typeof window !== 'undefined') {
       localStorage.setItem('preferred-locale', newLocale);

@@ -151,9 +151,9 @@ export default function LogoCarousel({ images, size = "default", direction = "le
     : "w-[140px] sm:w-[160px] md:w-[180px] lg:w-[200px] xl:w-[220px] 2xl:w-[240px]";
 
   return (
-    <section className="py-0 xl:py-2 2xl:py-4 bg-white">
-      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
-        <div className="relative">
+    <section className="py-0 xl:py-2 2xl:py-4 bg-white overflow-x-hidden">
+      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 w-full min-w-0">
+        <div className="relative overflow-hidden">
           {/* Fade Edges */}
           <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />

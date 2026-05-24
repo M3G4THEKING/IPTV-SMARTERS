@@ -19,6 +19,38 @@ export function isPremiumPlansSectionEnabled(pricing: PricingSlice): boolean {
   return true;
 }
 
+function normalizePricingString(value: string): string {
+  return value
+    .replace(/\r\n/g, " ")
+    .replace(/\n/g, " ")
+    .replace(/\u00a0/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Normalize pricing fields from admin edits before persisting to JSON. */
+export function normalizePricingSection(
+  pricing: Record<string, unknown> | undefined | null
+): Record<string, unknown> {
+  if (!pricing || typeof pricing !== "object") {
+    return {};
+  }
+
+  const result: Record<string, unknown> = { ...pricing };
+
+  if ("showPremiumPlans" in result) {
+    result.showPremiumPlans = isPremiumPlansSectionEnabled(result);
+  }
+
+  for (const [key, value] of Object.entries(result)) {
+    if (typeof value === "string") {
+      result[key] = normalizePricingString(value);
+    }
+  }
+
+  return result;
+}
+
 /** ISO 4217 code from locale JSON (admin-editable) with locale fallback. */
 export function getLocaleCurrencyCode(locale: Locale, pricing?: PricingSlice): string {
   const fromPricing = pricing?.currencyCode;

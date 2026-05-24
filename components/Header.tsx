@@ -135,7 +135,7 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ease-in-out ${
+      className={`fixed top-0 left-0 right-0 z-50 w-full max-w-[100vw] overflow-x-clip transition-transform duration-300 ease-in-out ${
         isScrolled ? "bg-white shadow-md" : "bg-white"
       } ${isVisible ? "translate-y-0" : "lg:-translate-y-full"}`}
     >

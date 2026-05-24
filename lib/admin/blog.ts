@@ -175,12 +175,25 @@ async function getGithubBlogs(): Promise<BlogPost[]> {
     ref: branch,
   });
 
-  if (response.status === 200 && "content" in response.data) {
-    const content = Buffer.from(response.data.content, "base64").toString("utf8");
-    const parsed = JSON.parse(content) as BlogPost[];
-    return Array.isArray(parsed) ? parsed.map(normalizeBlogPost) : [];
+  const data = response.data;
+  if (
+    response.status !== 200 ||
+    !data ||
+    typeof data !== "object" ||
+    Array.isArray(data) ||
+    !("content" in data)
+  ) {
+    return [];
   }
-  return [];
+
+  const file = data as { content: string };
+  if (typeof file.content !== "string") {
+    return [];
+  }
+
+  const content = Buffer.from(file.content, "base64").toString("utf8");
+  const parsed = JSON.parse(content) as BlogPost[];
+  return Array.isArray(parsed) ? parsed.map(normalizeBlogPost) : [];
 }
 
 export async function getAllBlogs(): Promise<BlogPost[]> {

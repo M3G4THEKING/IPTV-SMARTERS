@@ -63,7 +63,7 @@ export default function PricingCard({
           ease: "linear"
         }
       }}
-      className={`relative p-4 sm:p-5 xl:p-6 2xl:p-8 backdrop-blur-sm ${surface.cardRadius} ${
+      className={`relative min-w-0 p-4 sm:p-5 xl:p-6 2xl:p-8 backdrop-blur-sm ${surface.cardRadius} ${
         popular
           ? isCa
             ? "bg-[#2563eb] text-white shadow-xl border border-[#2563eb] ring-4 ring-[#2563eb]/15"

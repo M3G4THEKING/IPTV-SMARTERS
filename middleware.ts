@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { fixDuplicateLocalePath } from '@/lib/i18n/locale-path';
 
 const locales = ['en', 'es', 'fr', 'ca', 'uk'];
 const defaultLocale = 'en';
@@ -42,6 +43,13 @@ export function middleware(request: NextRequest) {
   // e.g., /en -> /en/, /ca -> /ca/, /es -> /es/, /fr -> /fr/
   if (locales.includes(pathname.slice(1)) && pathname.length === 3) {
     url.pathname = `${pathname}/`;
+    return NextResponse.redirect(url, 301);
+  }
+
+  // Fix malformed URLs from old locale switcher (e.g. /ca/uk/ → /uk/)
+  const fixedDuplicateLocale = fixDuplicateLocalePath(pathname);
+  if (fixedDuplicateLocale) {
+    url.pathname = fixedDuplicateLocale;
     return NextResponse.redirect(url, 301);
   }
 

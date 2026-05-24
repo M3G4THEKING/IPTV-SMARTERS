@@ -3,6 +3,7 @@ import es from './translations/es.json';
 import fr from './translations/fr.json';
 import ca from './translations/ca.json';
 import uk from './translations/uk.json';
+import { normalizeHeroSection } from './normalize-hero-text';
 
 export type Locale = 'en' | 'es' | 'fr' | 'ca' | 'uk';
 
@@ -20,8 +21,19 @@ export const translations = {
 
 export type TranslationKey = keyof typeof en | string;
 
+function withNormalizedHero<T extends Record<string, unknown>>(bundle: T): T {
+  if (!bundle.hero || typeof bundle.hero !== 'object') {
+    return bundle;
+  }
+  return {
+    ...bundle,
+    hero: normalizeHeroSection(bundle.hero as Record<string, unknown>),
+  };
+}
+
 export function getTranslations(locale: Locale) {
-  return translations[locale] || translations[defaultLocale];
+  const bundle = translations[locale] || translations[defaultLocale];
+  return withNormalizedHero(bundle as Record<string, unknown>) as typeof bundle;
 }
 
 // Country to locale mapping for automatic detection

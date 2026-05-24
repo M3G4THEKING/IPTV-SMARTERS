@@ -366,7 +366,7 @@ export default async function LocaleLayout({
 
   return (
     <LanguageProvider initialLocale={locale as Locale}>
-      <div data-locale={locale} className="contents">
+      <div data-locale={locale} className="w-full overflow-x-clip">
       <ScrollToTop />
       <script
         type="application/ld+json"

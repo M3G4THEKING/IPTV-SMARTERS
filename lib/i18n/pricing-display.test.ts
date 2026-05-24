@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   getLocaleCurrencyCode,
   isPremiumPlansSectionEnabled,
+  normalizePricingSection,
 } from "./pricing-display";
 
 describe("isPremiumPlansSectionEnabled", () => {
@@ -13,6 +14,17 @@ describe("isPremiumPlansSectionEnabled", () => {
   it("respects false and string false", () => {
     expect(isPremiumPlansSectionEnabled({ showPremiumPlans: false })).toBe(false);
     expect(isPremiumPlansSectionEnabled({ showPremiumPlans: "false" })).toBe(false);
+  });
+});
+
+describe("normalizePricingSection", () => {
+  it("coerces showPremiumPlans to boolean and trims strings", () => {
+    const result = normalizePricingSection({
+      showPremiumPlans: "false",
+      plan12MonthsPrice: "  79 $CA \n",
+    });
+    expect(result.showPremiumPlans).toBe(false);
+    expect(result.plan12MonthsPrice).toBe("79 $CA");
   });
 });
 

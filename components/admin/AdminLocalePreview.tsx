@@ -1,5 +1,8 @@
 ﻿"use client";
 
+import { DefaultHeroDescription } from "@/components/hero/DefaultHeroDescription";
+import { normalizeInlineHeroText } from "@/lib/i18n/normalize-hero-text";
+
 type GetValue = (path: string) => string;
 type GetBoolValue = (path: string, defaultValue?: boolean) => boolean;
 
@@ -103,18 +106,22 @@ export function AdminHeroPreview({ locale, getValue }: PreviewProps) {
         <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#2563eb] mb-3">
           {getValue("hero.eyebrow")}
         </p>
-        <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 leading-tight mb-2 max-w-xl">
-          {getValue("hero.title")}
+        <h1 className="text-2xl sm:text-3xl font-bold text-neutral-900 leading-tight mb-4 max-w-xl">
+          <span className="block">{getValue("hero.title")}</span>
+          <span className="block mt-1 text-base font-semibold text-neutral-600">
+            {getValue("hero.subtitlePart1")}{" "}
+            <span className="text-[#2563eb]">{getValue("hero.subtitlePart2")}</span>
+          </span>
         </h1>
-        <p className="text-base font-medium text-neutral-600 mb-4 max-w-lg">
-          {getValue("hero.subtitlePart1")}{" "}
-          <span className="text-[#2563eb]">{getValue("hero.subtitlePart2")}</span>
-        </p>
         <p className="text-sm text-neutral-600 leading-relaxed max-w-lg mb-4">
-          {getValue("hero.lead")}{" "}
-          <span className="font-medium text-[#2563eb]">{getValue("hero.channelsLink")}</span>
-          {getValue("hero.lead2")} {getValue("hero.lead3")} {getValue("hero.lead4")}{" "}
-          {getValue("hero.lead5")}
+          {normalizeInlineHeroText(getValue("hero.lead"))}{" "}
+          <span className="font-medium text-[#2563eb]">
+            {normalizeInlineHeroText(getValue("hero.channelsLink"))}
+          </span>
+          {normalizeInlineHeroText(getValue("hero.lead2"))}{" "}
+          {normalizeInlineHeroText(getValue("hero.lead3"))}{" "}
+          {normalizeInlineHeroText(getValue("hero.lead4"))}{" "}
+          {normalizeInlineHeroText(getValue("hero.lead5"))}
         </p>
         <div className="flex flex-wrap items-center gap-3 mb-4">
           <span className="inline-flex px-5 py-2.5 bg-[#2563eb] text-white text-sm font-semibold rounded-lg">
@@ -122,8 +129,8 @@ export function AdminHeroPreview({ locale, getValue }: PreviewProps) {
           </span>
           <span className="text-xs text-neutral-500">{getValue("hero.ctaNote")}</span>
         </div>
-        <p className="text-xs text-neutral-500 border-t border-neutral-100 pt-3 max-w-lg">
-          Keyword row (regional SEO topics) appears below the CTA on the live site.
+        <p className="text-xs text-neutral-500 max-w-lg">
+          UK keyword pills appear in the section below the hero stats (not inside the hero).
         </p>
       </div>
     );
@@ -140,7 +147,10 @@ export function AdminHeroPreview({ locale, getValue }: PreviewProps) {
           <span className="text-blue-600">{getValue("hero.subtitlePart2")}</span>
         </span>
       </h1>
-      <p className="text-gray-600 leading-relaxed text-sm">{getValue("hero.description")}</p>
+      <DefaultHeroDescription
+        className="text-gray-600 leading-relaxed text-sm"
+        getText={getValue}
+      />
     </div>
   );
 }

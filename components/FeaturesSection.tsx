@@ -89,7 +89,7 @@ export default function FeaturesSection() {
         )}
         
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-12 lg:gap-18 xl:gap-20 2xl:gap-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-12 lg:gap-16 xl:gap-20 2xl:gap-24 min-w-0">
           {featureItems.map((feature, index) => (
             <motion.div
               key={feature.id}

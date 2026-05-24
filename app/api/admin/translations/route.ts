@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAdminSession } from '@/lib/admin/auth';
 import { getAllTranslations, updateTranslationFile } from '@/lib/admin/github';
+import {
+  normalizeAdminTranslationContent,
+  validateTranslationSavePayload,
+} from '@/lib/i18n/normalize-hero-text';
 
 // GET - Fetch all translations
 export async function GET() {
@@ -39,15 +43,17 @@ export async function POST(request: NextRequest) {
 
     const { locale, content, sha } = await request.json();
 
-    if (!locale || !content || !sha) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
+    const validationError = validateTranslationSavePayload({ locale, content });
+    if (validationError) {
+      return NextResponse.json({ error: validationError }, { status: 400 });
     }
 
-    // Update translation file on GitHub
-    await updateTranslationFile(locale, content, sha);
+    const normalizedContent = normalizeAdminTranslationContent(
+      content as Record<string, unknown>
+    );
+
+    // Local save works without GitHub sha; remote sync fetches sha when missing.
+    await updateTranslationFile(locale, normalizedContent, typeof sha === 'string' ? sha : '');
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

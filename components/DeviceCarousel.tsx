@@ -11,11 +11,11 @@ export default function DeviceCarousel() {
         <div className="grid grid-cols-1 md:grid-cols-[40%_60%] gap-6 sm:gap-8 lg:gap-10 xl:gap-12 2xl:gap-16 items-center w-full">
           {/* Left Column - Image */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className="relative w-full flex items-center justify-center md:justify-start"
+            className="relative w-full min-w-0 flex items-center justify-center md:justify-start"
           >
             <div className="relative w-full max-w-[90%] aspect-square md:aspect-[4/5] lg:aspect-square flex items-center justify-center mx-auto">
               <div className="absolute inset-0 bg-white/50 backdrop-blur-sm rounded-2xl"></div>
@@ -33,11 +33,11 @@ export default function DeviceCarousel() {
 
           {/* Right Column - Text Content */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-            className="space-y-4 sm:space-y-6 w-full max-w-full min-w-0 overflow-hidden pr-6 sm:pr-8 lg:pr-12"
+            className="space-y-4 sm:space-y-6 w-full max-w-full min-w-0 overflow-hidden"
           >
             {/* Heading */}
             <motion.h2

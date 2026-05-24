@@ -294,7 +294,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen w-full max-w-[100vw] overflow-x-clip bg-white">
       <Header />
       <HeroSection />
       <CanadaLandingExtras />
@@ -430,9 +430,9 @@ export default function Home() {
                 </span>
               </div>
             </motion.div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 xl:gap-8 2xl:gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 xl:gap-8 2xl:gap-10 min-w-0">
               {pricingPlans.map((plan, index) => (
-                <Suspense key={index} fallback={<div className="h-96 bg-gray-50 animate-pulse rounded-lg" />}>
+                <Suspense key={index} fallback={<div className="h-96 bg-gray-50 animate-pulse rounded-lg min-w-0" />}>
                   <PricingCard
                     name={plan.name}
                     price={plan.price}
@@ -465,9 +465,9 @@ export default function Home() {
                   </span>
                 </div>
               </motion.div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 xl:gap-8 2xl:gap-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-6 xl:gap-8 2xl:gap-10 min-w-0">
                 {premiumPlans.map((plan, index) => (
-                  <Suspense key={index} fallback={<div className="h-96 bg-gray-50 animate-pulse rounded-lg" />}>
+                  <Suspense key={index} fallback={<div className="h-96 bg-gray-50 animate-pulse rounded-lg min-w-0" />}>
                     <PricingCard
                       name={plan.name}
                       price={plan.price}

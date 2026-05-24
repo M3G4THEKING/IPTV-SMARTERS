@@ -179,10 +179,10 @@ export default function ContentCarousel() {
   }, []);
 
   return (
-    <section className="pt-12 pb-4 sm:pt-16 sm:pb-6 xl:pt-20 xl:pb-8 2xl:pt-24 2xl:pb-10 bg-white">
-      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
+    <section className="pt-12 pb-4 sm:pt-16 sm:pb-6 xl:pt-20 xl:pb-8 2xl:pt-24 2xl:pb-10 bg-white overflow-x-hidden">
+      <div className="max-w-7xl xl:max-w-[1400px] 2xl:max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 w-full min-w-0">
         {/* Carousel Container */}
-        <div className="relative">
+        <div className="relative overflow-hidden">
           {/* Fade Edges */}
           <div className="absolute left-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-20 sm:w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
