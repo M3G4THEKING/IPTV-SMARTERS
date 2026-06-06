@@ -7,15 +7,12 @@ import {
   hasLocalePublishableContent,
   type BlogLocale,
 } from "@/lib/admin/blog-locales";
+import {
+  ADMIN_BLOG_LOCALE_LABELS,
+  getBlogLocaleLabel,
+  getBlogLocaleShort,
+} from "@/lib/admin/admin-locale-labels";
 import type { BlogPost } from "@/lib/admin/blog-shared";
-
-const LOCALE_LABELS: Record<BlogLocale, string> = {
-  en: "English (US)",
-  ca: "Canada",
-  uk: "United Kingdom",
-  es: "Spanish",
-  fr: "French",
-};
 
 interface BlogLocaleToolbarProps {
   blog: BlogPost;
@@ -71,8 +68,8 @@ export default function BlogLocaleToolbar({
       return;
     }
     const message = includeSlug
-      ? `Copy all content and URL slugs from ${LOCALE_LABELS[activeLocale]} to ${otherPublished.map((l) => LOCALE_LABELS[l]).join(", ")}?`
-      : `Copy all text content from ${LOCALE_LABELS[activeLocale]} to ${otherPublished.map((l) => LOCALE_LABELS[l]).join(", ")}? (Slugs stay separate.)`;
+      ? `Copy all content and URL slugs from ${getBlogLocaleLabel(activeLocale)} to ${otherPublished.map((l) => getBlogLocaleLabel(l)).join(", ")}?`
+      : `Copy all text content from ${getBlogLocaleLabel(activeLocale)} to ${otherPublished.map((l) => getBlogLocaleLabel(l)).join(", ")}? (Slugs stay separate.)`;
     if (!confirm(message)) return;
     onBlogChange(
       copyBlogLocaleContent(blog, activeLocale, {
@@ -111,7 +108,10 @@ export default function BlogLocaleToolbar({
                 onChange={() => togglePublished(loc)}
                 className="rounded border-gray-300"
               />
-              <span className="text-sm font-medium text-gray-800">{loc.toUpperCase()}</span>
+              <span className="text-sm font-medium text-gray-800">{getBlogLocaleShort(loc)}</span>
+              <span className="text-xs text-gray-500 hidden sm:inline">
+                {ADMIN_BLOG_LOCALE_LABELS[loc]}
+              </span>
               {checked && (
                 <span
                   className={`text-[10px] px-1.5 py-0.5 rounded ${
@@ -147,7 +147,7 @@ export default function BlogLocaleToolbar({
         >
           {publishedLocales.map((loc) => (
             <option key={loc} value={loc}>
-              {LOCALE_LABELS[loc]}
+              {getBlogLocaleLabel(loc)}
             </option>
           ))}
         </select>
@@ -165,7 +165,7 @@ export default function BlogLocaleToolbar({
             }`}
           >
             <Globe className="w-3.5 h-3.5 inline mr-1.5" />
-            {loc.toUpperCase()}
+            {getBlogLocaleShort(loc)}
           </button>
         ))}
       </div>

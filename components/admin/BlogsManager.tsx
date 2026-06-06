@@ -7,6 +7,10 @@ import DeploymentNotification from "./DeploymentNotification";
 import type { BlogPost } from "@/lib/admin/blog-shared";
 import { getBlogUrl } from "@/lib/utils/blog-slugs";
 import { getPublishedLocales, type BlogLocale } from "@/lib/admin/blog-locales";
+import {
+  getBlogLocaleLabel,
+  getBlogLocaleShort,
+} from "@/lib/admin/admin-locale-labels";
 import type { Locale } from "@/lib/i18n";
 
 export default function BlogsManager() {
@@ -222,7 +226,14 @@ export default function BlogsManager() {
               Are you sure you want to delete{" "}
               <span className="font-medium text-gray-900">
                 &quot;
-                {(deleteConfirmBlog.title.en || deleteConfirmBlog.title.es || deleteConfirmBlog.title.fr || "Untitled").trim()}
+                {(
+                  deleteConfirmBlog.title.en ||
+                  deleteConfirmBlog.title.ca ||
+                  deleteConfirmBlog.title.uk ||
+                  deleteConfirmBlog.title.es ||
+                  deleteConfirmBlog.title.fr ||
+                  "Untitled"
+                ).trim()}
                 &quot;
               </span>
               ? This action cannot be undone.
@@ -311,9 +322,10 @@ export default function BlogsManager() {
                    {getPublishedLocales(blog).map((loc) => (
                      <span
                        key={loc}
+                       title={getBlogLocaleLabel(loc)}
                        className="text-[10px] font-semibold uppercase px-1.5 py-0.5 rounded bg-gray-100 text-gray-600"
                      >
-                       {loc}
+                       {getBlogLocaleShort(loc)}
                      </span>
                    ))}
                  </div>
@@ -326,7 +338,7 @@ export default function BlogsManager() {
                  <div className="flex items-center justify-between text-xs text-gray-400 mb-3">
                    <span
                      className="truncate"
-                     title={`Slugs — EN: ${getSlugForDisplay(blog, "en")} | CA: ${getSlugForDisplay(blog, "ca")} | ES: ${getSlugForDisplay(blog, "es")} | FR: ${getSlugForDisplay(blog, "fr")}`}
+                     title={`Slugs — EN: ${getSlugForDisplay(blog, "en")} | CA: ${getSlugForDisplay(blog, "ca")} | UK: ${getSlugForDisplay(blog, "uk")} | ES: ${getSlugForDisplay(blog, "es")} | FR: ${getSlugForDisplay(blog, "fr")}`}
                    >
                      /{previewPrimary(blog).locale}/blog/{getSlugForDisplay(blog, previewPrimary(blog).locale)}/
                    </span>

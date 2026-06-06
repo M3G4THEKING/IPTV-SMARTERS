@@ -34,6 +34,15 @@ import {
   normalizeBlogSlugRecord,
   type BlogLocale,
 } from "@/lib/admin/blog-locales";
+import {
+  getBlogBlockTextPlaceholder,
+  getBlogExcerptPlaceholder,
+  getBlogLocaleLabel,
+  getBlogLocaleShort,
+  getBlogMetaDescriptionPlaceholder,
+  getBlogSlugPlaceholder,
+  getBlogTitlePlaceholder,
+} from "@/lib/admin/admin-locale-labels";
 import BlogLocaleToolbar from "@/components/admin/BlogLocaleToolbar";
 
 interface BlogEditorProps {
@@ -79,9 +88,9 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
       // Also ensure slug is in new format (Record<string, string>)
       const blogWithMeta = {
         ...initialBlog,
-        slug: typeof initialBlog.slug === 'string' 
-          ? { en: initialBlog.slug, es: initialBlog.slug, fr: initialBlog.slug }
-          : { en: "", ca: "", uk: "", es: "", fr: "", ...initialBlog.slug },
+        slug: normalizeBlogSlugRecord(initialBlog.slug),
+        title: { ...emptyLocaleTextMap(), ...initialBlog.title },
+        excerpt: { ...emptyLocaleTextMap(), ...initialBlog.excerpt },
         meta: {
           ...initialBlog.meta,
           description: {
@@ -457,21 +466,21 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
               {publishedLocales.map((loc) => (
                 <div key={loc}>
                   <label className="block text-xs text-gray-600 mb-1">
-                    {loc === "en" ? "English" : loc === "es" ? "Spanish" : "French"} ({loc.toUpperCase()})
+                    {getBlogLocaleLabel(loc)} ({getBlogLocaleShort(loc)})
                   </label>
                   <input
                     type="text"
                     value={getSlug(loc)}
                     onChange={(e) => setSlug(loc, e.target.value)}
-                    placeholder={loc === "en" ? "my-blog-post" : loc === "es" ? "mi-articulo-iptv" : "mon-article-iptv"}
+                    placeholder={getBlogSlugPlaceholder(loc)}
                     className="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
                   />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Preview: /{loc}/blog/{getSlug(loc) || "your-slug"}/
+                  </p>
                 </div>
               ))}
             </div>
-            <p className="text-xs text-gray-500 mt-2">
-              Preview: /{activeLocale}/blog/{getSlug(activeLocale) || "your-slug"}/
-            </p>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Author (Optional)</label>
@@ -489,7 +498,7 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Title ({activeLocale.toUpperCase()})
+              Title — {getBlogLocaleLabel(activeLocale)}
             </label>
             <input
               type="text"
@@ -501,13 +510,13 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
                   title: applyToLocales(e.target.value, "title", targets),
                 });
               }}
-              placeholder="Enter blog title"
+              placeholder={getBlogTitlePlaceholder(activeLocale)}
               className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 text-lg font-medium focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Excerpt ({activeLocale.toUpperCase()}) - Short description for listing page
+              Excerpt — {getBlogLocaleLabel(activeLocale)} (listing page)
             </label>
             <textarea
               value={blog.excerpt[activeLocale] || ""}
@@ -519,13 +528,13 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
                 });
               }}
               rows={3}
-              placeholder="Enter a short excerpt that will appear on the blog listing page"
+              placeholder={getBlogExcerptPlaceholder(activeLocale)}
               className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              SEO meta description ({activeLocale.toUpperCase()}) — search snippet and social preview text
+              SEO meta description — {getBlogLocaleLabel(activeLocale)}
             </label>
             <textarea
               value={blog.meta?.description?.[activeLocale] || ""}
@@ -540,7 +549,7 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
                 });
               }}
               rows={3}
-              placeholder="Distinct description for this language (required to publish)"
+              placeholder={getBlogMetaDescriptionPlaceholder(activeLocale)}
               className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent resize-none"
             />
             <p className="text-xs text-gray-500 mt-1">
@@ -550,7 +559,7 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
           <div>
             <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
               <Tag className="w-4 h-4 text-gray-500" />
-              <span>SEO Keywords ({activeLocale.toUpperCase()}) - Comma-separated keywords (not visible on website)</span>
+              <span>SEO Keywords — {getBlogLocaleLabel(activeLocale)} (comma-separated, not visible on site)</span>
             </label>
             <textarea
               value={blog.meta?.keywords?.[activeLocale] || ""}
@@ -767,7 +776,7 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
                               : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                           }`}
                         >
-                          {loc.toUpperCase()}
+                          {getBlogLocaleShort(loc)}
                         </button>
                       ))}
                     </div>
@@ -829,7 +838,7 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
                         type="text"
                         value={currentContent}
                         onChange={(e) => setBlockContent(block.id, blockLocale, e.target.value)}
-                        placeholder={`Enter heading text (${blockLocale.toUpperCase()})`}
+                        placeholder={getBlogBlockTextPlaceholder(blockLocale, "heading")}
                         className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-black"
                         style={{
                           fontSize:
@@ -954,7 +963,7 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
                         id={`paragraph-${block.id}`}
                         value={currentContent}
                         onChange={(e) => setBlockContent(block.id, blockLocale, e.target.value)}
-                        placeholder={`Enter paragraph text (${blockLocale.toUpperCase()})`}
+                        placeholder={getBlogBlockTextPlaceholder(blockLocale, "paragraph")}
                         rows={4}
                         className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-black resize-none font-mono text-sm"
                         style={{ textAlign: block.style?.textAlign || "left" }}
@@ -980,7 +989,7 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
                                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                             }`}
                           >
-                            {loc.toUpperCase()}
+                            {getBlogLocaleShort(loc)}
                           </button>
                         ))}
                       </div>
@@ -1058,7 +1067,7 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
                                 : { ...(block.imageAlt || { en: "", ca: "", uk: "", es: "", fr: "" }), [blockLocale]: e.target.value };
                               updateBlock(block.id, { imageAlt: newAlt });
                             }}
-                            placeholder={`Image alt text (${blockLocale.toUpperCase()})`}
+                            placeholder={`Image alt text (${getBlogLocaleLabel(blockLocale)})`}
                             className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-black"
                           />
                           <div className="flex items-center gap-2">
@@ -1132,7 +1141,7 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
                       <textarea
                         value={currentContent}
                         onChange={(e) => setBlockContent(block.id, blockLocale, e.target.value)}
-                        placeholder={`Enter quote text (${blockLocale.toUpperCase()})`}
+                        placeholder={getBlogBlockTextPlaceholder(blockLocale, "quote")}
                         rows={3}
                         className="w-full px-3 py-2 bg-gray-50 border-l-4 border-gray-400 rounded-lg text-gray-900 italic focus:outline-none focus:ring-2 focus:ring-black resize-none"
                       />
@@ -1182,7 +1191,7 @@ export default function BlogEditor({ onSave, onDelete, initialBlog }: BlogEditor
                                   });
                                 }
                               }}
-                              placeholder={`List item (${blockLocale.toUpperCase()})`}
+                              placeholder={getBlogBlockTextPlaceholder(blockLocale, "list")}
                               className="flex-1 px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-black"
                             />
                             <button
