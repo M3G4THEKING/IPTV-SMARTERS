@@ -10,7 +10,6 @@ import { getAllBlogSlugs } from '@/lib/utils/blog-slugs';
 import { getPublishedLocales } from '@/lib/admin/blog-locales';
 import { buildHreflangAlternates, buildHomepageHreflangAlternates } from '@/lib/seo/hreflang';
 
-export const dynamic = 'force-dynamic';
 export const revalidate = 3600; // Revalidate every hour for fresh blog posts
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

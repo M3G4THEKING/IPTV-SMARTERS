@@ -1,6 +1,7 @@
 import { Octokit } from "@octokit/rest";
 import { promises as fs } from "node:fs";
 import path from "node:path";
+import { cache } from "react";
 import { adminReadsPreferGithub } from "@/lib/admin/local-filesystem";
 import {
   type BlogPost,
@@ -10,6 +11,11 @@ export {
   type BlogBlock,
   type BlogPost,
 } from "@/lib/admin/blog-shared";
+
+/** Public reads use bundled JSON (ISR/CDN). Admin reads use GitHub when configured. */
+export type BlogReadOptions = {
+  forAdmin?: boolean;
+};
 
 /** GitHub is only required when calling blog persistence APIs — not when importing types/helpers. */
 function getGithubBlogContext() {
@@ -128,6 +134,10 @@ function sortBlogsNewestFirst(blogs: BlogPost[]): BlogPost[] {
   );
 }
 
+const getPublicBlogsCached = cache(async (): Promise<BlogPost[]> => {
+  return sortBlogsNewestFirst(await getLocalBlogs());
+});
+
 /**
  * Merge GitHub + repo `data/blogs.json`. Prefer local when it has Canada publishes
  * missing on remote, or when a post was updated locally more recently.
@@ -197,10 +207,14 @@ async function getGithubBlogs(): Promise<BlogPost[]> {
   return Array.isArray(parsed) ? parsed.map(normalizeBlogPost) : [];
 }
 
-export async function getAllBlogs(): Promise<BlogPost[]> {
+export async function getAllBlogs(options?: BlogReadOptions): Promise<BlogPost[]> {
+  if (!options?.forAdmin) {
+    return getPublicBlogsCached();
+  }
+
   const local = await getLocalBlogs();
 
-  // Public read-path must keep working even when GitHub env vars are missing.
+  // Admin read-path must keep working even when GitHub env vars are missing.
   if (!hasGithubBlogContext()) {
     return local;
   }
@@ -234,8 +248,12 @@ export async function getAllBlogs(): Promise<BlogPost[]> {
   }
 }
 
-export async function getBlogBySlug(slug: string, locale?: string): Promise<BlogPost | null> {
-  const blogs = await getAllBlogs();
+export async function getBlogBySlug(
+  slug: string,
+  locale?: string,
+  options?: BlogReadOptions
+): Promise<BlogPost | null> {
+  const blogs = await getAllBlogs(options);
   const targetSlug = safeDecode(slug).trim();
   
   // Find blog by slug - support both old format (string) and new format (Record<string, string>)
@@ -266,7 +284,7 @@ export async function getBlogBySlug(slug: string, locale?: string): Promise<Blog
 export async function saveBlog(blog: BlogPost): Promise<void> {
   try {
     const { octokit, owner, repo, branch, email, name } = getGithubBlogContext();
-    const blogs = await getAllBlogs();
+    const blogs = await getAllBlogs({ forAdmin: true });
     const existingIndex = blogs.findIndex((b) => b.id === blog.id);
     
     if (existingIndex >= 0) {
@@ -326,7 +344,7 @@ export async function saveBlog(blog: BlogPost): Promise<void> {
 export async function deleteBlog(blogId: string): Promise<void> {
   try {
     const { octokit, owner, repo, branch, email, name } = getGithubBlogContext();
-    const blogs = await getAllBlogs();
+    const blogs = await getAllBlogs({ forAdmin: true });
     const filtered = blogs.filter((b) => b.id !== blogId);
     
     const content = JSON.stringify(filtered, null, 2);

@@ -14,7 +14,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { isPremiumPlansSectionEnabled } from "@/lib/i18n/pricing-display";
 import { openWhatsApp } from "@/lib/whatsapp";
 import { shouldReduceAnimations, isMobile } from "@/lib/utils/performance";
-import { getBlogUrl, isBlogAvailableInLocale } from "@/lib/utils/blog-slugs";
+import { getBlogUrl } from "@/lib/utils/blog-slugs";
 import type { BlogPost } from "@/lib/admin/blog-shared";
 import { getLocaleSurface } from "@/lib/i18n/locale-surface";
 
@@ -36,7 +36,11 @@ const ComponentLoader = () => (
   <div className="w-full h-64 bg-gray-50 animate-pulse rounded-lg" />
 );
 
-export default function Home() {
+type HomePageClientProps = {
+  latestBlogs?: BlogPost[];
+};
+
+export default function Home({ latestBlogs = [] }: HomePageClientProps) {
   const { t, locale, translations } = useLanguage();
   const pricingContent = translations.pricing as Record<string, string | boolean> | undefined;
   const showPremiumPlans = isPremiumPlansSectionEnabled(pricingContent);
@@ -46,7 +50,6 @@ export default function Home() {
   const surface = getLocaleSurface(locale);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   const [reduceAnimations, setReduceAnimations] = useState(false);
-  const [latestBlogs, setLatestBlogs] = useState<BlogPost[]>([]);
 
   // Detect mobile and defer non-critical resources
   useEffect(() => {
@@ -87,26 +90,6 @@ export default function Home() {
       }
     }
   }, []);
-
-  useEffect(() => {
-    fetch("/api/blogs")
-      .then((res) => (res.ok ? res.json() : []))
-      .then((data: BlogPost[]) => {
-        if (!Array.isArray(data)) {
-          setLatestBlogs([]);
-          return;
-        }
-        const available = data
-          .filter((blog) => isBlogAvailableInLocale(blog, locale))
-          .sort(
-            (a, b) =>
-              new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
-          )
-          .slice(0, 3);
-        setLatestBlogs(available);
-      })
-      .catch(() => setLatestBlogs([]));
-  }, [locale]);
 
   const pricingPlans = [
     {

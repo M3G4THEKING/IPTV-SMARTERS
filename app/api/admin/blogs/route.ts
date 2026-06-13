@@ -20,7 +20,7 @@ async function validateAndNormalizeBlogForPublish(blog: BlogPost): Promise<BlogP
     throw new Error(validation.error);
   }
 
-  const allBlogs = await getAllBlogs();
+  const allBlogs = await getAllBlogs({ forAdmin: true });
   const duplicateError = findDuplicateSlugError(validation.blog, allBlogs, publishedLocales);
   if (duplicateError) {
     throw new Error(duplicateError);
@@ -42,11 +42,11 @@ export async function GET(request: NextRequest) {
     const locale = searchParams.get("locale");
 
     if (slug) {
-      const blog = await getBlogBySlug(slug, locale || undefined);
+      const blog = await getBlogBySlug(slug, locale || undefined, { forAdmin: true });
       return NextResponse.json(blog);
     }
 
-    const blogs = await getAllBlogs();
+    const blogs = await getAllBlogs({ forAdmin: true });
     return NextResponse.json(blogs);
   } catch (error: unknown) {
     console.error("Error fetching blogs:", error);

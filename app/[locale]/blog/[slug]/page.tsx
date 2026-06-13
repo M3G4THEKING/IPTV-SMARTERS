@@ -12,8 +12,6 @@ import {
 import { hreflangByLocale } from "@/lib/seo/hreflang";
 import { siteNameMap } from "@/lib/i18n/locale-maps";
 
-// Ensure dynamic rendering for blog posts (they're created dynamically)
-export const dynamic = "force-dynamic";
 export const revalidate = 3600; // Revalidate every hour
 
 interface BlogPostPageProps {
